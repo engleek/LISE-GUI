@@ -29,7 +29,7 @@ let hpaned = GPack.paned `HORIZONTAL
 
 (* FormulaEditor *)
 
-let formula_editor = new formula_editor
+let formulaEditor = new formulaEditor
   ~packing:hpaned#add2 ()
 
 (*let statusbar = GMisc.statusbar
@@ -57,10 +57,10 @@ let _ =
     ~accel_group in
       factory#add_item "Ouvrir..."
         ~key:_O
-        ~callback:formula_editor#open_formula;
+        ~callback:formulaEditor#open_formula;
       factory#add_item "Enregistrer"
         ~key:_S
-        ~callback:formula_editor#save_formula;
+        ~callback:formulaEditor#save_formula;
       factory#add_separator ();
       factory#add_item "Quitter"
         ~key:_Q

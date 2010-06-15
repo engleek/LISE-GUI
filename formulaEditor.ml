@@ -1,6 +1,6 @@
 open Tools
 
-class formula_editor ?packing ?show () = object (self)
+class formulaEditor ?packing ?show () = object (self)
 
   val formula = GText.view ?packing ?show ()
 
