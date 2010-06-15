@@ -3,6 +3,7 @@ open GdkKeysyms
 open StdLabels
 
 open FormulaEditor
+open ActorTree
 
 (* Main Widget Declarations *)
 let window = GWindow.window
@@ -24,61 +25,32 @@ let file_menu = factory#add_submenu "File"
 
 let hpaned = GPack.paned `HORIZONTAL
   ~border_width:5
-  ~packing:vbox#pack ()
+  ~packing:vbox#add ()
 
-(* Actor Model *)
-open Gobject.Data
-
-let cols = new GTree.column_list
-let col_name = cols#add string	(* string column *)
-let col_age = cols#add int	(* int column *)
-
-let create_model () =
-  let data = [("Heinz El-Mann", 51); ("Jane Doe", 23); ("Joe Bungop", 91)] in
-    let store = GTree.list_store cols in
-    let fill (name, age) =
-      let iter = store#append () in
-        store#set
-          ~row:iter
-          ~column:col_name name;
-        store#set
-          ~row:iter
-          ~column:col_age age
-    in
-    List.iter fill data;
-    store
-
-(* Actor View *)
-let create_view ~model ~packing () =
-  let view = GTree.view
-    ~model
-    ~packing () in
-
-  (* Column #1: col_name is string column *)
-  let col = GTree.view_column
-    ~title:"Name"
-    ~renderer:(GTree.cell_renderer_text [], ["text", col_name]) () in
-  ignore (view#append_column col);
-
-  (* Column #2: col_age is int column *)
-  let col = GTree.view_column
-    ~title:"Age"
-    ~renderer:(GTree.cell_renderer_text [], ["text", col_age]) () in
-  ignore (view#append_column col);
-
-  view
+(* FormulaEditor *)
 
 let formula_editor = new formula_editor
   ~packing:hpaned#add2 ()
 
-let statusbar = GMisc.statusbar
+(*let statusbar = GMisc.statusbar
   ~height:20
-  ~packing:vbox#add ()
+  ~packing:vbox#add ()*)
    
 (* Build, instanciate, play! *)
 let _ =
-    window#connect#destroy
-        ~callback:Main.quit;
+  window#connect#destroy
+    ~callback:Main.quit;
+
+  (* ActorTree *)
+
+  let sw = GBin.scrolled_window ~shadow_type:`ETCHED_IN ~hpolicy:`AUTOMATIC
+      ~vpolicy:`AUTOMATIC ~packing:hpaned#add1 () in
+    let model = create_model () in
+      let treeview = GTree.view ~model ~packing:sw#add () in
+        treeview#set_rules_hint true;
+        treeview#selection#set_mode `MULTIPLE;
+        add_columns ~view:treeview ~model;
+        treeview#misc#connect#realize ~callback:treeview#expand_all;
 
   (* Menus *)
   let factory = new GMenu.factory file_menu
@@ -93,9 +65,6 @@ let _ =
       factory#add_item "Quitter"
         ~key:_Q
         ~callback:window#destroy;
-
-  let model = create_model () in
-    create_view ~model ~packing:hpaned#add1 ();
 
   hpaned#set_position 200;
 
