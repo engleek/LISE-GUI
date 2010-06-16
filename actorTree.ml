@@ -40,22 +40,13 @@ let data_categories =
 let cols = new GTree.column_list
 let name = cols#add string
 let count = cols#add int
-let bg = cols#add (unsafe_boxed (Gobject.Type.from_name "GdkColor"))
 
-let create_model () =
+let actorModel () =
   let model = GTree.tree_store cols in
   List.iter data_categories ~f:
     begin fun (category_name, category) ->
       let row = model#append () in
       model#set ~row ~column:name category_name;
-      List.iter category ~f:
-        begin fun (n,c) ->
-          let row = model#append ~parent:row () in
-          let set column = model#set ~row ~column in
-          set name n;
-          set count c;
-          set bg (GDraw.color (`NAME "pink"))
-        end;
     end;
   model
 
@@ -63,9 +54,8 @@ let create_model () =
 let add_columns ~(view : GTree.view) ~model =
   let renderer = GTree.cell_renderer_text [`XALIGN 0.] in
   let column_name = 
-    GTree.view_column ~title:"Acteur" ~renderer:(renderer, ["text", name]) ()
+    GTree.view_column ~title:"Type" ~renderer:(renderer, ["text", name]) ()
   in
-  column_name#add_attribute renderer "background-gdk" bg;
   view#append_column column_name;
   let column_count =
     GTree.view_column ~title:"Nombre" ~renderer:(renderer, ["text", count]) ()
