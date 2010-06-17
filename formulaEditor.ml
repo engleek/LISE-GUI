@@ -11,20 +11,60 @@ class formulaEditor ?packing ?show () =
   let formulaVBox = GPack.vbox
     ~packing: formulaFrame#add () in
   let formulaToolbar = GButton.toolbar
+    ~style:`BOTH
     ~packing:formulaVBox#pack () in
-  let boldButton = GButton.toggle_tool_button ~stock:`BOLD () in
+  let formula = GText.view
+    ~packing:formulaVBox#add () in
+  let translation = GText.view
+    ~packing:translationFrame#add () in
+  let chiButton = formulaToolbar#insert_button
+    ~text:"Χ"
+    ~tooltip:"Chi"
+    ~callback:(fun () -> formula#buffer#insert "Χ") () in
+  let phiButton = formulaToolbar#insert_button
+    ~text:"Φ"
+    ~tooltip:"Phi"
+    ~callback:(fun () -> formula#buffer#insert "Φ") () in
+  let psiButton = formulaToolbar#insert_button
+    ~text:"Ψ"
+    ~tooltip:"Psi"
+    ~callback:(fun () -> formula#buffer#insert "Ψ") () in
+  let spacer1 = formulaToolbar#insert_space () in
+  let squareButton = formulaToolbar#insert_button
+    ~text:"□"
+    ~tooltip:"Vrai dans tous les états prochains"
+    ~callback:(fun () -> formula#buffer#insert "□") () in
+  let lozengeButton = formulaToolbar#insert_button
+    ~text:"◊"
+    ~tooltip:"Vrai dans au moins un des états prochains"
+    ~callback:(fun () -> formula#buffer#insert "◊") () in
+  let spacer1 = formulaToolbar#insert_space () in
+  let notButton = formulaToolbar#insert_button
+    ~text:"¬"
+    ~tooltip:"Négation"
+    ~callback:(fun () -> formula#buffer#insert "¬") () in
+  let andButton = formulaToolbar#insert_button
+    ~text:"∧"
+    ~tooltip:"Et"
+    ~callback:(fun () -> formula#buffer#insert "∧") () in
+  let orButton = formulaToolbar#insert_button
+    ~text:"∨"
+    ~tooltip:"Ou"
+    ~callback:(fun () -> formula#buffer#insert "∨") () in
+  let tautButton = formulaToolbar#insert_button
+    ~text:"⊨"
+    ~tooltip:"Tautologie"
+    ~callback:(fun () -> formula#buffer#insert "⊨") () in
+  let rarrowButton = formulaToolbar#insert_button
+    ~text:"→"
+    ~tooltip:"Implique"
+    ~callback:(fun () -> formula#buffer#insert "→") () in
     object (self)
-    
-      val formula = GText.view
-        ~packing:formulaVBox#add ()
-        
-      val translation = GText.view
-        ~packing:translationFrame#add ()
-
+            
       val mutable filename = None
 
       method formula = formula
-        
+      
       (* File Loader *)
       method load_file name =
         try
