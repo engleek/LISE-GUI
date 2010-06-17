@@ -4,6 +4,7 @@ open StdLabels
 
 open FormulaEditor
 open ActorTree
+open LogView
 
 (* Main Widget Declarations *)
 let window = GWindow.window
@@ -23,18 +24,23 @@ let accel_group = factory#accel_group
 
 let file_menu = factory#add_submenu "Fichier"
 
-let hpaned = GPack.paned `HORIZONTAL
+let vpaned = GPack.paned `VERTICAL
   ~border_width:5
   ~packing:vbox#add ()
+
+let hpaned = GPack.paned `HORIZONTAL
+  ~border_width:5
+  ~packing:vpaned#add ()
 
 (* FormulaEditor *)
 
 let formulaEditor = new formulaEditor
   ~packing:hpaned#add2 ()
 
-(*let statusbar = GMisc.statusbar
-  ~height:20
-  ~packing:vbox#add ()*)
+(* LogView *)
+
+let logView = new logView
+  ~packing:vpaned#add ()
    
 (* Build, instanciate, play! *)
 let _ =
