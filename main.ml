@@ -8,8 +8,8 @@ open LogView
 
 (* Main Widget Declarations *)
 let window = GWindow.window
-  ~width:500
-  ~height:300
+  ~width:640
+  ~height:480
   ~title:"ANR LISE - Analyseur de logs" ()
 
 let vbox = GPack.vbox
@@ -23,6 +23,14 @@ let factory = new GMenu.factory menubar
 let accel_group = factory#accel_group
 
 let file_menu = factory#add_submenu "Fichier"
+
+let toolbar = GButton.toolbar
+  ~style:`ICONS
+  ~packing:vbox#pack ()
+
+let openButton = GButton.tool_button
+  ~stock:`OPEN
+  ~packing:(fun w -> toolbar#insert w) ()
 
 let vpaned = GPack.paned `VERTICAL
   ~border_width:5
@@ -79,7 +87,10 @@ let _ =
         ~key:_Q
         ~callback:window#destroy;
 
+  toolbar#set_icon_size `SMALL_TOOLBAR;
+
   hpaned#set_position 200;
+  vpaned#set_position 330;
 
   window#add_accel_group accel_group;
 

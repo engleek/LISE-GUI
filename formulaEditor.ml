@@ -13,9 +13,15 @@ class formulaEditor ?packing ?show () =
   let formulaToolbar = GButton.toolbar
     ~style:`BOTH
     ~packing:formulaVBox#pack () in
-  let formula = GText.view
+  let scrolledWindow = GBin.scrolled_window
+    ~shadow_type:`ETCHED_IN
+    ~hpolicy:`NEVER
+    ~vpolicy:`AUTOMATIC
     ~packing:formulaVBox#add () in
-  let translation = GText.view
+  let formula = GText.view
+    ~packing:scrolledWindow#add () in
+  let translation = GMisc.label
+    ~text:"Traduction de la requête en langage naturel ici."
     ~packing:translationFrame#add () in
   let chiButton = formulaToolbar#insert_button
     ~text:"Χ"
@@ -106,4 +112,9 @@ class formulaEditor ?packing ?show () =
               close_out oc;
               filename <- Some file
         with _ -> prerr_endline "Save failed"
+
+      initializer
+        formula#set_left_margin 5;
+        formula#set_right_margin 5;
+        formula#set_pixels_above_lines 5
     end
