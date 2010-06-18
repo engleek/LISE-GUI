@@ -2,97 +2,10 @@ open GMain
 open GdkKeysyms
 open StdLabels
 
-open FormulaEditor
-open ActorTree
-open LogView
+open MainWindow
 
-(* Main Widget Declarations *)
-let window = GWindow.window
-  ~width:640
-  ~height:480
-  ~title:"ANR LISE - Analyseur de logs" ()
-
-let vbox = GPack.vbox
-  ~packing:window#add ()
-
-let menubar = GMenu.menu_bar
-  ~packing:vbox#pack ()
-
-let factory = new GMenu.factory menubar
-
-let accel_group = factory#accel_group
-
-let file_menu = factory#add_submenu "Fichier"
-
-let toolbar = GButton.toolbar
-  ~style:`ICONS
-  ~packing:vbox#pack ()
-
-let openButton = GButton.tool_button
-  ~stock:`OPEN
-  ~packing:(fun w -> toolbar#insert w) ()
-
-let vpaned = GPack.paned `VERTICAL
-  ~border_width:5
-  ~packing:vbox#add ()
-
-let hpaned = GPack.paned `HORIZONTAL
-  ~border_width:5
-  ~packing:vpaned#add ()
-
-(* FormulaEditor *)
-
-let formulaEditor = new formulaEditor
-  ~packing:hpaned#add2 ()
-
-(* LogView *)
-
-let logView = new logView
-  ~packing:vpaned#add ()
-   
 (* Build, instanciate, play! *)
 let _ =
-  window#connect#destroy
-    ~callback:Main.quit;
-
-  (* ActorTree *)
-
-  let actorFrame = GBin.frame
-    ~label:"Acteurs"
-    ~border_width:0
-    ~packing:hpaned#add1() in
-      let actorScrolledWindow = GBin.scrolled_window
-        ~shadow_type:`ETCHED_IN
-        ~hpolicy:`AUTOMATIC
-        ~vpolicy:`AUTOMATIC
-        ~packing:actorFrame#add () in
-          let model = actorModel () in
-            let treeview = GTree.view ~model ~packing:actorScrolledWindow#add () in
-              treeview#set_rules_hint true;
-              treeview#selection#set_mode `MULTIPLE;
-              add_columns ~view:treeview ~model;
-              treeview#misc#connect#realize ~callback:treeview#expand_all;
-
-  (* Menus *)
-  let factory = new GMenu.factory file_menu
-    ~accel_group in
-      factory#add_item "Ouvrir..."
-        ~key:_O
-        ~callback:formulaEditor#open_formula;
-      factory#add_item "Enregistrer"
-        ~key:_S
-        ~callback:formulaEditor#save_formula;
-      factory#add_separator ();
-      factory#add_item "Quitter"
-        ~key:_Q
-        ~callback:window#destroy;
-
-  toolbar#set_icon_size `SMALL_TOOLBAR;
-
-  hpaned#set_position 200;
-  vpaned#set_position 330;
-
-  window#add_accel_group accel_group;
-
-  window#show ();
+  Main.init ();
+  ignore (new mainWindow ~show:true ());
   Main.main ()
