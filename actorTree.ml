@@ -29,27 +29,55 @@ let data_functions =
     "sign", 1;
   ]
 
-let data_categories =
-  [ "Composants", data_components;
-    "Services", data_services;
-    "Fournisseurs", data_providers;
-    "Interfaces", data_interfaces;
-    "Fonctions", data_functions;
-  ]
+class actorTree ?packing ?show () =
 
-let cols = new GTree.column_list
-let name = cols#add string
-let count = cols#add int
+  (* Layout Widgets *)
+  let actorFrame = GBin.frame
+    ~label:"Acteurs"
+    ~border_width:0
+    ?packing () in
+  let actorScrolledWindow = GBin.scrolled_window
+    ~shadow_type:`ETCHED_IN
+    ~hpolicy:`AUTOMATIC
+    ~vpolicy:`AUTOMATIC
+    ~packing:actorFrame#add () in
 
-let actorModel () =
-  let model = GTree.tree_store cols in
-  List.iter data_categories ~f:
-    begin fun (category_name, category) ->
-      let row = model#append () in
-      model#set ~row ~column:name category_name;
-    end;
-  model
+  (* Conveniances *)
+  let columns = new GTree.column_list in
+  let name = columns#add string in
+  let count = columns#add int in
+  let model = GTree.tree_store in
+  let store = model columns in
+  let row = store#append () in
+  let tree = GTree.view
+    ~model:store
+    ~packing:actorScrolledWindow#add () in
+  let name_col = GTree.view_column
+    ~title:"Nom"
+    ~renderer:(GTree.cell_renderer_text [], ["text", name]) () in
+  let count_col = GTree.view_column
+    ~title:"Nombre"
+    ~renderer:(GTree.cell_renderer_text [], ["text", count]) () in
+  let calls = store#set ~row ~column:name "Appel/Retour" in
+  let components = store#set ~row ~column:name "Composant" in
+  let services = store#set ~row ~column:name "Service" in
+  let providers = store#set ~row ~column:name "Appel/Retour" in
+  let interfaces = store#set ~row ~column:name "Fournisseur" in
+  let functions = store#set ~row ~column:name "Fonction" in
+  object (self)
+  
+    initializer
+      ignore (tree#append_column name_col);
+      ignore (tree#append_column count_col);
 
+(*
+    initializer
+      List.iter data_categories ~f:
+        begin fun (category_name, category) ->
+          let row = model#append () in
+          model#set ~row ~column:name category_name;
+        end;
+      model
 (* Keep an eye on this... *)
 let add_columns ~(view : GTree.view) ~model =
   let renderer = GTree.cell_renderer_text [`XALIGN 0.] in
@@ -61,3 +89,5 @@ let add_columns ~(view : GTree.view) ~model =
     GTree.view_column ~title:"Nombre" ~renderer:(renderer, ["text", count]) ()
   in
   view#append_column column_count
+*)
+  end

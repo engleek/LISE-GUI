@@ -1,28 +1,44 @@
 open Tools
 
 class formulaEditor ?packing ?show () =
+
+  (* Layout Widgets *)
   let vbox = GPack.vbox ?packing ?show () in
+
+  (* Frames *)
   let formulaFrame = GBin.frame
     ~label:"Requête"
     ~packing:(vbox#pack ~expand:true ~fill:true) () in
   let translationFrame = GBin.frame
     ~label:"Traduction"
     ~packing:(vbox#pack ~expand:true ~fill:true) () in
+
+  (* More Layout Widgets *)
   let formulaVBox = GPack.vbox
     ~packing: formulaFrame#add () in
+
+  (* Formula Toolbar *)
   let formulaToolbar = GButton.toolbar
     ~style:`BOTH
     ~packing:formulaVBox#pack () in
+
+  (* Formula Scrollbar *)
   let scrolledWindow = GBin.scrolled_window
     ~shadow_type:`ETCHED_IN
     ~hpolicy:`NEVER
     ~vpolicy:`AUTOMATIC
     ~packing:formulaVBox#add () in
+
+  (* Formula Text Box *)
   let formula = GText.view
     ~packing:scrolledWindow#add () in
+
+  (* Translation Label *)
   let translation = GMisc.label
     ~text:"Traduction de la requête en langage naturel ici."
     ~packing:translationFrame#add () in
+
+  (* Toolbar Buttons *)
   let chiButton = formulaToolbar#insert_button
     ~text:"Χ"
     ~tooltip:"Chi"
@@ -65,6 +81,7 @@ class formulaEditor ?packing ?show () =
     ~text:"→"
     ~tooltip:"Implique"
     ~callback:(fun () -> formula#buffer#insert "→") () in
+    
     object (self)
             
       val mutable filename = None
