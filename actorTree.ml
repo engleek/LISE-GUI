@@ -65,18 +65,17 @@ class actorTree ?packing ?show () =
   let interfaces = store#set ~row ~column:name "Fournisseur" in
   let functions = store#set ~row ~column:name "Fonction" in
   object (self)
-
+(*
     method addCall callName () =
       let path = GTree.Path.from_string "0" in
         let modl = tree#model in
           let parent = modl#get_iter path in
             let row = store#append ~parent in
               store#set ~row ~column:name "Testing!";
-      
+*)      
     initializer
       ignore (tree#append_column name_col);
       ignore (tree#append_column count_col);
-      self#addCall "Super!"
 
 (*
     initializer
