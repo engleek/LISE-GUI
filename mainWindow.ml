@@ -41,8 +41,8 @@ class mainWindow ?(show=false) () =
     ~packing:vpaned#add () in
 
   (* Actor Tree Widgets *)
-  let actorTree = new actorTree
-    ~packing:hpaned#add1 () in
+  (* let actorTree = new actorTree
+    ~packing:hpaned#add1 () in *)
 
   (* Formula Editor *)
   let formulaEditor = new formulaEditor
