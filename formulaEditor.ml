@@ -30,8 +30,25 @@ class formulaEditor ?packing ?show () =
     ~packing:formulaVBox#add () in
 
   (* Formula Text Box *)
-  let formula = GText.view
-    ~packing:scrolledWindow#add () in
+  (* let formula = GText.view
+    ~packing:scrolledWindow#add () in *)
+  let formula = GSourceView2.source_view
+    ~auto_indent:true
+    ~tab_width:2
+    ~insert_spaces_instead_of_tabs:true
+    ~show_line_numbers:true
+    ~show_right_margin:true
+    ~right_margin_position:30
+    ~smart_home_end:`ALWAYS
+    ~packing:scrolledWindow#add
+    ~height:300 () in
+  let language_manager = GSourceView2.source_language_manager
+    ~default:true in
+  let lang =
+    match language_manager#guess_language
+      ~content_type:"text/x-ocaml" () with
+      | None -> failwith "no language for text/x-ocaml"
+      | Some lang -> lang in
 
   (* Translation Label *)
   let translation = GMisc.label
@@ -131,7 +148,11 @@ class formulaEditor ?packing ?show () =
         with _ -> prerr_endline "Save failed"
 
       initializer
-        formula#set_left_margin 5;
-        formula#set_right_margin 5;
-        formula#set_pixels_above_lines 5
+
+        formula#source_buffer#set_highlight_matching_brackets true;
+        (*formula#source_buffer#set_bracket_match_style (GSourceView2.source_tag_style ~background:`GRAY) *)
+        formula#set_show_line_marks true;
+
+        formula#source_buffer#set_language (Some lang);
+        formula#source_buffer#set_highlight_syntax true;
     end
