@@ -1,6 +1,7 @@
 open GMain
 
 open FormulaEditor
+open FormulaBook
 open ActorTree
 open LogView
 
@@ -36,22 +37,17 @@ class mainWindow ?(show=false) () =
   let vpaned = GPack.paned `VERTICAL
     ~border_width:5
     ~packing:vbox#add () in
-  let hpaned = GPack.paned `HORIZONTAL
-    ~border_width:5
-    ~packing:vpaned#add () in
 
-  (* Actor Tree Widgets *)
-  (* let actorTree = new actorTree
-    ~packing:hpaned#add1 () in *)
-
-  (* Formula Editor *)
-  let formulaEditor = new formulaEditor
-    ~packing:hpaned#add2 () in
+  (* Formula Book *)
+  let formulaBook = new formulaBook
+    ~packing:vpaned#add1
+    ~show:true () in
 
   (* Log View *)
   let logView = new logView
-    ~packing:vpaned#add () in
+    ~packing:vpaned#add2 () in
 
+  let ed = new formulaEditor () in
     object (self)
       method window = window
 
@@ -61,21 +57,17 @@ class mainWindow ?(show=false) () =
           ~callback:Main.quit;
 
         (* Toolbar Sigs *)
-        newButton#connect#clicked (fun () -> print_endline "NewButton");
+        (* newButton#connect#clicked (fun () -> print_endline "NewButton");
         openButton#connect#clicked (fun () -> formulaEditor#open_formula());
-        saveButton#connect#clicked (fun () -> formulaEditor#save_formula());
+        saveButton#connect#clicked (fun () -> formulaEditor#save_formula()); *)
 
         (* Customizations *)
         toolbar#set_icon_size `SMALL_TOOLBAR;
-        hpaned#set_position (mainWidth / 5);
         vpaned#set_position (mainHeight - (mainHeight / 3));
 
-        (* Tree View: MOVEME *)
-(*        treeview#set_rules_hint true;
-        treeview#selection#set_mode `MULTIPLE;
-        add_columns ~view:treeview ~model;
-        treeview#misc#connect#realize ~callback:treeview#expand_all;
-*)
+        formulaBook#notebook#prepend_page ~tab_label:(GMisc.label ~text:"Formule A" ())#coerce (new formulaEditor ())#coerce;
+        formulaBook#notebook#prepend_page ~tab_label:(GMisc.label ~text:"Formule B" ())#coerce (new formulaEditor ())#coerce;
+
         (* Curtains! *)
         if show then window#show ();
     end
