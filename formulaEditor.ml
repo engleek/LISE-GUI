@@ -5,17 +5,9 @@ class formulaEditor ?packing ?show () =
   (* Layout Widgets *)
   let vbox = GPack.vbox ?packing ?show () in
 
-  (* Frames *)
-  let formulaFrame = GBin.frame
-    ~label:"Requête"
-    ~packing:(vbox#pack ~expand:true ~fill:true) () in
-  let translationFrame = GBin.frame
-    ~label:"Traduction"
-    ~packing:(vbox#pack ~expand:true ~fill:true) () in
-
   (* More Layout Widgets *)
   let formulaVBox = GPack.vbox
-    ~packing: formulaFrame#add () in
+    ~packing:(vbox#pack ~expand:true ~fill:true) () in
 
   (* Formula Toolbar *)
   let formulaToolbar = GButton.toolbar
@@ -30,8 +22,6 @@ class formulaEditor ?packing ?show () =
     ~packing:formulaVBox#add () in
 
   (* Formula Text Box *)
-  (* let formula = GText.view
-    ~packing:scrolledWindow#add () in *)
   let formula = GSourceView2.source_view
     ~auto_indent:true
     ~tab_width:2
@@ -53,23 +43,10 @@ class formulaEditor ?packing ?show () =
   (* Translation Label *)
   let translation = GMisc.label
     ~text:"Traduction de la requête en langage naturel ici."
-    ~packing:translationFrame#add () in
+    ~packing:(vbox#pack ~expand:true ~fill:true) () in
 
   (* Toolbar Buttons *)
-  let chiButton = formulaToolbar#insert_button
-    ~text:"Χ"
-    ~tooltip:"Chi"
-    ~callback:(fun () -> formula#buffer#insert "Χ") () in
-  let phiButton = formulaToolbar#insert_button
-    ~text:"Φ"
-    ~tooltip:"Phi"
-    ~callback:(fun () -> formula#buffer#insert "Φ") () in
-  let psiButton = formulaToolbar#insert_button
-    ~text:"Ψ"
-    ~tooltip:"Psi"
-    ~callback:(fun () -> formula#buffer#insert "Ψ") () in
-  let spacer1 = formulaToolbar#insert_space () in
-  let squareButton = formulaToolbar#insert_button
+(*  let squareButton = formulaToolbar#insert_button
     ~text:"□"
     ~tooltip:"Vrai dans tous les états prochains"
     ~callback:(fun () -> formula#buffer#insert "□") () in
@@ -77,7 +54,7 @@ class formulaEditor ?packing ?show () =
     ~text:"◊"
     ~tooltip:"Vrai dans au moins un des états prochains"
     ~callback:(fun () -> formula#buffer#insert "◊") () in
-  let spacer1 = formulaToolbar#insert_space () in
+  let spacer1 = formulaToolbar#insert_space () in *)
   let notButton = formulaToolbar#insert_button
     ~text:"¬"
     ~tooltip:"Négation"
@@ -90,17 +67,17 @@ class formulaEditor ?packing ?show () =
     ~text:"∨"
     ~tooltip:"Ou"
     ~callback:(fun () -> formula#buffer#insert "∨") () in
-  let tautButton = formulaToolbar#insert_button
-    ~text:"⊨"
-    ~tooltip:"Tautologie"
-    ~callback:(fun () -> formula#buffer#insert "⊨") () in
   let rarrowButton = formulaToolbar#insert_button
     ~text:"→"
     ~tooltip:"Implique"
     ~callback:(fun () -> formula#buffer#insert "→") () in
-    
+  let rarrowButton = formulaToolbar#insert_button
+    ~text:"⇔"
+    ~tooltip:"Equivalent"
+    ~callback:(fun () -> formula#buffer#insert "⇔") () in    
     object (self)
-            
+      inherit GObj.widget vbox#as_widget
+      
       val mutable filename = None
 
       method formula = formula
