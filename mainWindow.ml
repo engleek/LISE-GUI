@@ -65,8 +65,9 @@ class mainWindow ?(show=false) () =
         toolbar#set_icon_size `SMALL_TOOLBAR;
         vpaned#set_position (mainHeight - (mainHeight / 3));
 
-        formulaBook#notebook#prepend_page ~tab_label:(GMisc.label ~text:"Formule A" ())#coerce (new formulaEditor ())#coerce;
         formulaBook#notebook#prepend_page ~tab_label:(GMisc.label ~text:"Formule B" ())#coerce (new formulaEditor ())#coerce;
+        formulaBook#notebook#prepend_page ~tab_label:(GMisc.label ~text:"Formule A" ())#coerce (new formulaEditor ~content:"FormuleA = ¬FormuleB" ())#coerce;
+        formulaBook#notebook#goto_page 0;
 
         (* Curtains! *)
         if show then window#show ();

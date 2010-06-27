@@ -1,6 +1,6 @@
 open Tools
 
-class formulaEditor ?packing ?show () =
+class formulaEditor ?packing ?show ?(content="") () =
 
   (* Layout Widgets *)
   let vbox = GPack.vbox ?packing ?show () in
@@ -43,7 +43,8 @@ class formulaEditor ?packing ?show () =
   (* Translation Label *)
   let translation = GMisc.label
     ~text:"Traduction de la requête en langage naturel ici."
-    ~packing:(vbox#pack ~expand:true ~fill:true) () in
+    ~packing:(vbox#pack ~expand:true ~fill:true)
+    ~height:80 () in
 
   (* Toolbar Buttons *)
 (*  let squareButton = formulaToolbar#insert_button
@@ -129,6 +130,7 @@ class formulaEditor ?packing ?show () =
         formula#source_buffer#set_highlight_matching_brackets true;
         (*formula#source_buffer#set_bracket_match_style (GSourceView2.source_tag_style ~background:`GRAY) *)
         formula#set_show_line_marks true;
+        formula#source_buffer#set_text content;
 
         formula#source_buffer#set_language (Some lang);
         formula#source_buffer#set_highlight_syntax true;

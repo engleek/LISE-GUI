@@ -23,4 +23,5 @@ class formulaBook ?packing ?show () =
 
       initializer
         ignore (notebook#append_page ~tab_label:addImage#coerce (GMisc.label ~text:"This is an empty page, you shouldn't be seeing it..." ())#coerce);
+        (*addImage#connect#clicked (fun () -> print "New Formula Button clicked!");*)
     end
