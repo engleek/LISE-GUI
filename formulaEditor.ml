@@ -28,7 +28,7 @@ class formulaEditor ?packing ?show ?(content="") () =
     ~insert_spaces_instead_of_tabs:true
     ~show_line_numbers:true
     ~show_right_margin:true
-    ~right_margin_position:30
+    ~right_margin_position:80
     ~smart_home_end:`ALWAYS
     ~packing:scrolledWindow#add
     ~height:300 () in
