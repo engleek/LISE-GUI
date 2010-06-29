@@ -143,6 +143,18 @@ class logView ?packing ?show () =
   let colEntryTrans = GTree.view_column ~title:"Entry" ()
       ~renderer:(GTree.cell_renderer_text[], ["text",entry]) in
     object (self)
+
+      method setData data () =
+        let storeOrig = GTree.tree_store columns in
+        let storeTrans = GTree.tree_store columns in
+          let addEntries =
+            begin fun (orig, trad) ->
+              storeOrig#set ~row:(storeOrig#append ()) ~column:entry orig;
+              storeTrans#set ~row:(storeTrans#append ()) ~column:entry trad
+            end;
+          in
+          List.iter addEntries data;
+
     
     initializer
       logOrig#set_headers_visible false;
