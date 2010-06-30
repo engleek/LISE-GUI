@@ -70,5 +70,6 @@ class mainWindow ?(show=false) () =
         formulaBook#notebook#goto_page 0;
 
         (* Curtains! *)
+        window#maximize;
         if show then window#show ();
     end
