@@ -144,7 +144,7 @@ class logView ?packing ?show () =
       ~renderer:(GTree.cell_renderer_text[], ["text",entry]) in
     object (self)
 
-      method setData data () =
+      method private makeModels data () = 
         let storeOrig = GTree.tree_store columns in
         let storeTrans = GTree.tree_store columns in
           let addEntries =
@@ -154,7 +154,7 @@ class logView ?packing ?show () =
             end;
           in
           List.iter addEntries data;
-
+          (storeOrig, storeTrans);
     
     initializer
       logOrig#set_headers_visible false;
