@@ -1,11 +1,11 @@
 OCC=ocamlc
 CC=ocaml
 EXEC=ANRLISEGUI
-SOURCES=tools.ml logView.ml formulaEditor.ml formulaBook.ml actorTree.ml mainWindow.ml main.ml
+SOURCES=tools.ml lang.ml logView.ml formulaEditor.ml formulaBook.ml actorTree.ml mainWindow.ml main.ml
 MODULES=lablgtk.cma lablgtksourceview2.cma gtkInit.cmo
 INCLUDES=+lablgtk2
 
-all: mainWindow
+all: mainWindow lang
 	$(OCC) -I $(INCLUDES) -o $(EXEC) $(MODULES) $(SOURCES)
 
 mainWindow: formulaBook actorTree logView
