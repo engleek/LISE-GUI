@@ -1,6 +1,7 @@
 (* General Tools for the main GUI *)
 
 (* File Open Dialog *)
+(*
 let file_dialog ~title ~callback ?filename () =
   let sel =
     GWindow.file_selection
@@ -28,3 +29,5 @@ let with_file name ~f =
       close_in ic
     with exn -> close_in ic;
     raise exn
+
+*)
