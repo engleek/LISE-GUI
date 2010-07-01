@@ -14,7 +14,7 @@ class mainWindow ?(show=false) () =
   let window = GWindow.window
     ~width:mainWidth
     ~height:mainHeight
-    ~title:"Analyseur de logs" () in
+    ~title:string_title () in
 
   (* Main Layout Widget *)
   let vbox = GPack.vbox
@@ -42,6 +42,9 @@ class mainWindow ?(show=false) () =
   let newFormulaButton = GButton.tool_button
     ~stock:`ADD
     ~packing:(fun w -> toolbar#insert w) () in
+
+  (* Tooltips *)
+  let tooltips = GData.tooltips () in
 
   (* More Layout Widgets! *)
   let vpaned = GPack.paned `VERTICAL
@@ -72,6 +75,12 @@ class mainWindow ?(show=false) () =
         (* newButton#connect#clicked (fun () -> print_endline "NewButton");
         openButton#connect#clicked (fun () -> formulaEditor#open_formula());
         saveButton#connect#clicked (fun () -> formulaEditor#save_formula()); *)
+
+        (* Tooltips *)
+        tooltips#set_tip ~text:string_new_tooltip newButton#coerce;
+        tooltips#set_tip ~text:string_open_tooltip openButton#coerce;
+        tooltips#set_tip ~text:string_save_tooltip saveButton#coerce;
+        tooltips#set_tip ~text:string_add_formula_tooltip newFormulaButton#coerce;
 
         (* Customizations *)
         toolbar#set_icon_size `SMALL_TOOLBAR;
