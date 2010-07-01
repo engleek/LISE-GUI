@@ -47,15 +47,23 @@ class formulaEditor ?packing ?show ?(content="") () =
     ~height:80 () in
 
   (* Toolbar Buttons *)
-(*  let squareButton = formulaToolbar#insert_button
-    ~text:"□"
+  let trueButton = formulaToolbar#insert_button
+    ~text:"⊤"
+    ~tooltip:"Vrai"
+    ~callback:(fun () -> formula#buffer#insert "⊤") () in
+  let trueButton = formulaToolbar#insert_button
+    ~text:"*⊥*"
+    ~tooltip:"Faux"
+    ~callback:(fun () -> formula#buffer#insert "⊥") () in
+  let squareButton = formulaToolbar#insert_button
+    ~text:"<b>□</b>"
     ~tooltip:"Vrai dans tous les états prochains"
     ~callback:(fun () -> formula#buffer#insert "□") () in
   let lozengeButton = formulaToolbar#insert_button
     ~text:"◊"
     ~tooltip:"Vrai dans au moins un des états prochains"
     ~callback:(fun () -> formula#buffer#insert "◊") () in
-  let spacer1 = formulaToolbar#insert_space () in *)
+  let spacer1 = formulaToolbar#insert_space () in
   let notButton = formulaToolbar#insert_button
     ~text:"¬"
     ~tooltip:"Négation"
