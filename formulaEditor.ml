@@ -94,7 +94,6 @@ class formulaEditor ?packing ?show ?(content="") () =
       initializer
 
         formula#source_buffer#set_highlight_matching_brackets true;
-        (*formula#source_buffer#set_bracket_match_style (GSourceView2.source_tag_style ~background:`GRAY) *)
         formula#set_show_line_marks true;
         formula#source_buffer#set_text content;
 
