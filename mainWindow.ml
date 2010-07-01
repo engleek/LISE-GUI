@@ -6,6 +6,9 @@ open ActorTree
 open LogView
 open Lang
 
+let mainWidth = 800
+let mainHeight = 600
+
 class mainWindow ?(show=false) () =
   (* Window *)
   let window = GWindow.window
