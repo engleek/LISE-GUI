@@ -1,6 +1,6 @@
 OCC=ocamlc
 CC=ocaml
-EXEC=ANRLISEGUI
+EXEC=LISE
 SOURCES=tools.ml lang.ml logView.ml formulaEditor.ml formulaBook.ml actorTree.ml mainWindow.ml main.ml
 MODULES=lablgtk.cma lablgtksourceview2.cma gtkInit.cmo
 INCLUDES=+lablgtk2
