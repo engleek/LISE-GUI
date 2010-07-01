@@ -6,15 +6,12 @@ open ActorTree
 open LogView
 open Lang
 
-let mainWidth = 800
-let mainHeight = 600
-
 class mainWindow ?(show=false) () =
   (* Window *)
   let window = GWindow.window
     ~width:mainWidth
     ~height:mainHeight
-    ~title:"ANR LISE - Analyseur de logs" () in
+    ~title:"Analyseur de logs" () in
 
   (* Main Layout Widget *)
   let vbox = GPack.vbox
