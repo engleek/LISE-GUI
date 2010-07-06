@@ -5,10 +5,13 @@ SOURCES=tools.ml lang.ml logView.ml formulaEditor.ml formulaBook.ml actorTree.ml
 MODULES=lablgtk.cma lablgtksourceview2.cma gtkInit.cmo
 INCLUDES=+lablgtk2
 
-all: mainWindow lang
+all: mainWindow
 	$(OCC) -I $(INCLUDES) -o $(EXEC) $(MODULES) $(SOURCES)
 
-mainWindow: formulaBook actorTree logView
+mainWindow: formulaBook actorTree logView lang
+	$(OCC) -I $(INCLUDES) -o $(EXEC) $(MODULES) $(SOURCES)
+
+logView: lang
 	$(OCC) -I $(INCLUDES) -o $(EXEC) $(MODULES) $(SOURCES)
 
 formulaBook: formulaEditor
