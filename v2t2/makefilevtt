@@ -1,0 +1,4 @@
+SOURCES =  services_yacc.mly services_lex.mll protagonists_yacc.mly protagonists_lex.mll log.ml log_yacc.mly log_lex.mll   kripke.ml  unification.ml  main.ml
+LIBS = 	nums
+RESULT  = traceur
+  -include OCamlMakefile
