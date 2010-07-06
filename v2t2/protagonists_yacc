@@ -1,0 +1,25 @@
+%token <string> INT 
+%token <string> STRING
+%token EOL 
+%token EOF 
+%token PTVIRG
+%token FLECHE
+%token TIRET
+%token CALL 
+%token RESPONSE
+%start main 
+%type <Traceur.log_line list> main
+%%
+
+
+main: EOF {[]}
+| log  main  {$1 :: $2} ;
+log :CALL PTVIRG INT PTVIRG INT PTVIRG INT PTVIRG  INT PTVIRG INT PTVIRG INT PTVIRG INT PTVIRG param  
+ {( Traceur.create_log_call (int_of_string $3)  (Big_int.big_int_of_string $5)) (int_of_string $7) (int_of_string $9) (int_of_string $11) (int_of_string $13) (int_of_string $15) $17 }
+|RESPONSE PTVIRG  INT PTVIRG INT PTVIRG FLECHE TIRET PTVIRG STRING PTVIRG EOL {( Traceur.create_log_response  (int_of_string $3)  (Big_int.big_int_of_string $5)  $10)}
+;
+
+param:
+ EOL {[]}
+| STRING PTVIRG  param {$1::$3} 
+| INT PTVIRG  param {$1::$3} 
