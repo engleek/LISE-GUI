@@ -116,31 +116,42 @@ class logView ?packing ?show () =
   let logFrame = GBin.frame
     ?packing ?show
     ~label:"Logs" () in
-  let hbox = GPack.hbox
+  let vbox = GPack.vbox
     ~packing:logFrame#add () in
 
   let model = make_model logs in
 
-  let vscrollbar = GRange.scrollbar `VERTICAL
-    ~packing:(hbox#pack ~from:`END) () in
-  (*let hscrollbar = GRange.scrollbar `HORIZONTAL
-    ~packing:(vbox#pack ~from:`END) () in*)
+  (* Toolbar *)
+  let toolbar = GButton.toolbar
+    ~style:`ICONS
+    ~packing:vbox#pack () in
+  let runButton = GButton.tool_button
+    ~stock:`MEDIA_PLAY
+    ~packing:(fun w -> toolbar#insert w) () in
+
+  let scrollWin = GBin.scrolled_window
+    ~packing:(vbox#pack ~fill:true ~expand:true) () in
 
   let logView = GTree.view
     ~model
-    ~vadjustment:vscrollbar#adjustment
-    (*~hadjustment:hscrollbar#adjustment*)
-    ~packing:hbox#add () in
+    ~packing:scrollWin#add () in
 
   let colEntryOrig = GTree.view_column ~title:string_original ()
       ~renderer:(GTree.cell_renderer_text[], ["text", orig_col]) in
   let colEntryTrans = GTree.view_column ~title:string_translated ()
       ~renderer:(GTree.cell_renderer_text[], ["text", trans_col]) in
     object (self)
+
+        method runCurrentFormula () = 
+          runButton#set_stock_id `STOP;
     
     initializer
       logView#set_headers_visible true;
       logView#selection#set_mode `MULTIPLE;
       ignore (logView#append_column colEntryOrig);
       ignore (logView#append_column colEntryTrans);
+      
+      runButton#connect#clicked ~callback:self#runCurrentFormula;
+
+      toolbar#set_icon_size `SMALL_TOOLBAR;
   end
