@@ -118,18 +118,26 @@ class logView ?packing ?show () =
     ~label:"Logs" () in
   let vbox = GPack.vbox
     ~packing:logFrame#add () in
+  let hbox = GPack.hbox
+    ~packing:(vbox#pack ~fill:true ~expand:false) () in
 
   let model = make_model logs in
 
   (* Toolbar *)
   let toolbar = GButton.toolbar
     ~style:`ICONS
-    ~packing:vbox#pack () in
+    ~packing:(hbox#pack ~fill:true ~expand:true) () in
   let runButton = GButton.tool_button
     ~stock:`MEDIA_PLAY
     ~packing:(fun w -> toolbar#insert w) () in
+    
+  let spinStart = GEdit.spin_button
+    ~packing:hbox#pack () in
+  let spinEnd = GEdit.spin_button
+    ~packing:hbox#pack () in
 
   let scrollWin = GBin.scrolled_window
+    ~hpolicy:`AUTOMATIC
     ~packing:(vbox#pack ~fill:true ~expand:true) () in
 
   let logView = GTree.view
@@ -150,8 +158,8 @@ class logView ?packing ?show () =
       logView#selection#set_mode `MULTIPLE;
       ignore (logView#append_column colEntryOrig);
       ignore (logView#append_column colEntryTrans);
-      
-      runButton#connect#clicked ~callback:self#runCurrentFormula;
 
-      toolbar#set_icon_size `SMALL_TOOLBAR;
+      toolbar#set_icon_size `SMALL_TOOLBAR;      
+      (*runButton#connect#clicked ~callback:self#runCurrentFormula;*)
+
   end
