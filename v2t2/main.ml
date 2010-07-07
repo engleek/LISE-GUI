@@ -8,14 +8,14 @@ let _ =
                 print_string (Log.logs_to_string (Log.associe_protagonist result)); print_newline(); 
 		print_string "\n Fin lecture des logs ..\n" ;
 		flush stdout; 
-		let kripke_log=Kripke.traitement_logs result  
+	(*	let kripke_log=Kripke.traitement_logs result  
 		in 
 		let subst_list = Unification.state_appears_in Log.statevar1 kripke_log in 
 		  print_string ("\nOn a trouve "); 
 		  print_int (List.length subst_list) ; 
 		  print_string (" substitution(s) du pattern-etat : \n "^(Log.log_line_to_string Log.statevar1) );
 		  
-		  print_string (Unification.list_subst_to_string (subst_list)) ;
+		  print_string (Unification.list_subst_to_string (subst_list)) ;*)
 		   
 		end
          (* with  _ ->
