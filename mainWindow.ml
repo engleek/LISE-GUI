@@ -4,6 +4,7 @@ open FormulaEditor
 open FormulaBook
 open ActorTree
 open LogView
+open Dialogs
 open Lang
 
 let mainWidth = 800
@@ -62,9 +63,30 @@ class mainWindow ?(show=false) () =
 
   let tab = new tabWidget () in
 
-  let ed = new formulaEditor () in
     object (self)
+    
+      val mutable formulaName = None
+      
       method window = window
+
+      method newFormula () = 
+        if formulaName = None then
+        match dialog_confirm () with
+        | 1 -> ()
+        | 2 -> ()
+        | _ -> ()
+
+      method loadFormula () =
+        match dialog_open window () with
+          | None -> ()
+          | Some f -> print_endline f
+            
+      method saveFormula () = 
+        if formulaName = None then
+          match dialog_save window () with
+            | None -> ()
+            | Some f -> print_endline "Save file"
+        else print_endline "Already have name, save file"
 
       initializer
         (* Window Sigs *)
@@ -72,9 +94,9 @@ class mainWindow ?(show=false) () =
           ~callback:Main.quit;
 
         (* Toolbar Sigs *)
-        (* newButton#connect#clicked (fun () -> print_endline "NewButton");
-        openButton#connect#clicked (fun () -> formulaEditor#open_formula());
-        saveButton#connect#clicked (fun () -> formulaEditor#save_formula()); *)
+        newButton#connect#clicked self#newFormula;
+        openButton#connect#clicked self#loadFormula;
+        saveButton#connect#clicked self#saveFormula;
 
         (* Tooltips *)
         tooltips#set_tip ~text:string_new_tooltip newButton#coerce;
@@ -85,9 +107,6 @@ class mainWindow ?(show=false) () =
         (* Customizations *)
         toolbar#set_icon_size `SMALL_TOOLBAR;
         vpaned#set_position (mainHeight - (mainHeight / 3));
-
-        formulaBook#notebook#prepend_page ~tab_label:(tab)#coerce (new formulaEditor ())#coerce;
-        formulaBook#notebook#goto_page 0;
 
         tab#set_valid false;
 
