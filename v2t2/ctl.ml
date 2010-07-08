@@ -22,8 +22,10 @@ type formula =
 
 
 
-let satisfies_vp s phi = true 
-
+let satisfies_vp kp s x =
+  try
+   Kripke.is_labeled_by kp s x (*Ecrire cette fonction qui doit vérifier que x apparait dans le label de s*) 
+  with _ ->failwith "satisfies_vp appelé avec autre chose qu'une variable propositionnelle" 
 
 let rec satisfies (kp:Kripke.kripke) (s:Kripke.state) phi =
   match
@@ -31,7 +33,7 @@ let rec satisfies (kp:Kripke.kripke) (s:Kripke.state) phi =
   with  
       True -> true 
     | False -> false
-    | VP(x) ->  satisfies_vp s phi
+    | VP(x) ->  satisfies_vp kp s x
     | Neg (psi )-> not (satisfies kp s psi) 
     | Or(psi1, psi2) -> (satisfies kp s psi1) || (satisfies kp s psi2)
     | And(psi1, psi2) -> (satisfies kp s psi1) && (satisfies kp s psi2)
@@ -74,3 +76,5 @@ let rec satisfies (kp:Kripke.kripke) (s:Kripke.state) phi =
 
 
 (*ATTENTION ECRIRE UNE FONCTION QUI VERIFIE QU'UNE FORMULE DONNEE EST BIEN EN CTL !!!!!!! *)
+
+let need_definition s = (true, [VP("A"), VP("B"), Next(Or(VP("C"),False) )])
