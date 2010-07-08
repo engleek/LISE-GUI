@@ -1,21 +1,5 @@
 (* General Tools for the main GUI *)
 
-(* File Open Dialog *)
-(*
-let file_dialog ~title ~callback ?filename () =
-  let sel =
-    GWindow.file_selection
-      ~title
-      ~modal:true
-      ?filename () in
-  sel#cancel_button#connect#clicked ~callback:sel#destroy;
-  sel#ok_button#connect#clicked ~callback:
-    begin fun () ->
-      let name = sel#filename in
-      sel#destroy ();
-      callback name
-    end;
-  sel#show ()
 
 let input_channel b ic =
   let buf = String.create 1024 and len = ref 0 in
@@ -29,5 +13,3 @@ let with_file name ~f =
       close_in ic
     with exn -> close_in ic;
     raise exn
-
-*)
