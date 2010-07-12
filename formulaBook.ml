@@ -1,29 +1,32 @@
 open Tools
 open FormulaEditor
 
-class tabWidget () =
+class tabWidget (name:string) (isFormula:bool) () =
 
   let hbox = GPack.hbox () in
 
-  let validityIcon = GMisc.image
-    ~file:"rc/bullet_green.png"
+  let label = GMisc.label
+    ~text:name
+    ~packing:hbox#add () in
+
+  let typeIcon = GMisc.image
+    ~file:"rc/pill.png"
     ~icon_size:`MENU
     ~packing:hbox#add () in
 
-  let label = GMisc.label
-    ~text:"Formule"
-    ~packing:hbox#add () in
+  (*let validityIcon = GMisc.image
+    ~file:"rc/bullet_green.png"
+    ~icon_size:`MENU
+    ~packing:hbox#add () in*)
     
     object (self)
       inherit GObj.widget hbox#as_widget
       
       method label () = label
       
-      method set_valid valid () =
-        if valid
-        then validityIcon#set_stock `NO
-        else validityIcon#set_stock `NO
-    end
+      initializer
+        if isFormula then typeIcon#set_file "rc/plugin.png"
+  end
 
 class formulaBook ?packing ?show () =
 
@@ -39,10 +42,16 @@ class formulaBook ?packing ?show () =
 
       method notebook = notebook;
 
-      (*method newFormula data = 
-        notebook#prepend_page ~tab_label:(GMisc.label ~text:"Formule B" ())#coerce (new formulaEditor ())#coerce;*)
+      method newVP ?(name="var inconnue") ?(content="") =
+        (let label = new tabWidget name false () in
+            let editor = new formulaEditor () in
+                notebook#prepend_page ~tab_label:label#coerce editor#coerce);
+        ()
 
-      initializer
-        ignore (notebook#prepend_page ~tab_label:((new tabWidget ())#coerce) (new formulaEditor ())#coerce);
-        (*addImage#connect#clicked (fun () -> print "New Formula Button clicked!");*)
+      method newFormula ?(name="formule inconnue") ?(content="") =
+        (let label = new tabWidget name true () in
+            let editor = new formulaEditor () in
+                notebook#prepend_page ~tab_label:label#coerce editor#coerce);
+        ()
+
     end
