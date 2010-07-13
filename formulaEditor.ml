@@ -91,6 +91,8 @@ class formulaEditor ?packing ?show ?(content="") () =
 
       method formula = formula
       
+      method data = formula#buffer#get_text ()
+      
       initializer
 
         formula#source_buffer#set_highlight_matching_brackets true;

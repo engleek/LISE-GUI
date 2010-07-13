@@ -75,6 +75,8 @@ class mainWindow ?(show=false) () =
       val mutable formulaName = None
       
       method window = window
+      
+      method data_list = formulaBook#data
 
       method newFormula () = 
         if formulaName = None then
@@ -94,6 +96,10 @@ class mainWindow ?(show=false) () =
             | None -> ()
             | Some f -> print_endline "Save file"
         else print_endline "Already have name, save file"
+        
+      method print_data () =
+        let prt (elem:string) = print_endline elem in
+          List.iter prt (formulaBook#data)
 
       initializer
         (* Window Sigs *)
@@ -105,7 +111,7 @@ class mainWindow ?(show=false) () =
         addFormulaButton#set_icon_widget (addFormulaIcon)#coerce;
 
         (* Toolbar Sigs *)
-        newButton#connect#clicked self#newFormula;
+        newButton#connect#clicked ~callback:(fun () -> self#print_data ());
         openButton#connect#clicked self#loadFormula;
         saveButton#connect#clicked self#saveFormula;
         addVPButton#connect#clicked ~callback:(fun () -> formulaBook#newVP ~name:"name" ~content:"name");

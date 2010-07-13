@@ -1,24 +1,25 @@
 open Tools
+open Dialogs
 open FormulaEditor
 
 class tabWidget (name:string) (isFormula:bool) () =
 
   let hbox = GPack.hbox () in
 
-  let label = GMisc.label
-    ~text:name
-    ~packing:hbox#add () in
-
   let typeIcon = GMisc.image
     ~file:"rc/pill.png"
     ~icon_size:`MENU
     ~packing:hbox#add () in
+    
+  let label = GMisc.label
+    ~text:name
+    ~packing:hbox#add () in
 
-  (*let validityIcon = GMisc.image
+  let validityIcon = GMisc.image
     ~file:"rc/bullet_green.png"
     ~icon_size:`MENU
-    ~packing:hbox#add () in*)
-    
+    ~packing:hbox#add () in
+
     object (self)
       inherit GObj.widget hbox#as_widget
       
@@ -38,20 +39,31 @@ class formulaBook ?packing ?show () =
       inherit GObj.widget notebook#as_widget
 
       val mutable current_formula = None
+      val mutable vp_list = []
       val mutable formula_list = []
+      
+      val mutable temp_list = ([] : string list)
 
       method notebook = notebook;
-
-      method newVP ?(name="var inconnue") ?(content="") =
+      
+      method data = 
+        (let prep (elem:formulaEditor) = temp_list <- elem#data :: temp_list in
+         let app (elem:formulaEditor) = temp_list <- elem#data :: temp_list in
+             List.iter prep vp_list;
+             List.iter app formula_list); temp_list
+      
+      method newVP ?(name="") ?(content="") =
         (let label = new tabWidget name false () in
-            let editor = new formulaEditor () in
-                notebook#prepend_page ~tab_label:label#coerce editor#coerce);
+           let editor = new formulaEditor () in
+              notebook#prepend_page ~tab_label:label#coerce editor#coerce;
+              vp_list <- editor :: vp_list);
         ()
 
       method newFormula ?(name="formule inconnue") ?(content="") =
         (let label = new tabWidget name true () in
             let editor = new formulaEditor () in
-                notebook#prepend_page ~tab_label:label#coerce editor#coerce);
+              notebook#prepend_page ~tab_label:label#coerce editor#coerce;
+              formula_list <- editor :: formula_list);
         ()
 
     end
