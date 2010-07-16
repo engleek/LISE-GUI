@@ -19,12 +19,18 @@ let dialog_confirm () =
     ~default:0
     ~icon:(GMisc.image ~stock:`DIALOG_WARNING ())#coerce
 
+let dialog_string () =
+  GToolbox.input_string
+    "Nom de la nouvelle formule: "
+    ~title:"Nom"
+      
+
 let dialog_open parent () =
   let file = ref None in
   let dialog = GWindow.file_chooser_dialog 
-      ~action:`OPEN
-      ~title:"Ouvrir"
-      ~parent () in
+    ~action:`OPEN
+    ~title:"Ouvrir"
+    ~parent () in
   dialog#add_button_stock `CANCEL `CANCEL ;
   dialog#add_select_button_stock `OPEN `OPEN ;
   dialog#add_filter (formula_filter ()) ;
