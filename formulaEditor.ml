@@ -14,12 +14,21 @@ class formulaEditor ?packing ?show ?(content="") () =
     ~style:`BOTH
     ~packing:formulaVBox#pack () in
 
+  (* Divide into two sections *)
+  let hpaned = GPack.paned `HORIZONTAL
+    ~border_width:5
+    ~packing:vbox#pack () in
+    
+  (*  *)
+  let rightpane = GPack.paned `VERTICAL
+    ~packing:(hpaned#pack2 ~shrink:true ~resize:true) () in
+
   (* Formula Scrollbar *)
   let scrolledWindow = GBin.scrolled_window
     ~shadow_type:`ETCHED_IN
     ~hpolicy:`NEVER
     ~vpolicy:`AUTOMATIC
-    ~packing:formulaVBox#add () in
+    ~packing:hpaned#add1 () in
 
   (* Formula Text Box *)
   let formula = GSourceView2.source_view
@@ -30,8 +39,9 @@ class formulaEditor ?packing ?show ?(content="") () =
     ~show_right_margin:true
     ~right_margin_position:80
     ~smart_home_end:`ALWAYS
-    ~packing:scrolledWindow#add
-    ~height:300 () in
+    ~height:300
+    ~width:600
+    ~packing:scrolledWindow#add () in
   let language_manager = GSourceView2.source_language_manager
     ~default:true in
   let lang =
@@ -40,11 +50,25 @@ class formulaEditor ?packing ?show ?(content="") () =
       | None -> failwith "no language for text/x-ocaml"
       | Some lang -> lang in
 
-  (* Translation Label *)
+  (* Translation *)
+  let translationFrame = GBin.frame
+    ~label:"Traduction"
+    ~packing:rightpane#add1 () in
   let translation = GMisc.label
     ~text:"Traduction de la requête en langage naturel ici."
-    ~packing:(vbox#pack ~expand:true ~fill:true)
-    ~height:80 () in
+    ~width:200
+    ~height:80
+    ~packing:translationFrame#add () in
+
+  (* Translation *)
+  let descriptionFrame = GBin.frame
+    ~label:"Description"
+    ~packing:rightpane#add2 () in
+  let description = GMisc.label
+    ~text:"Description."
+    ~width:200
+    ~height:80
+    ~packing:descriptionFrame#add () in
 
   (* Toolbar Buttons *)
   let trueButton = formulaToolbar#insert_button
