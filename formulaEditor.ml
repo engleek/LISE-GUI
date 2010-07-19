@@ -7,28 +7,24 @@ class formulaEditor ?packing ?show ?(content="") () =
 
   (* More Layout Widgets *)
   let formulaVBox = GPack.vbox
-    ~packing:(vbox#pack ~expand:true ~fill:true) () in
+    ~packing:(vbox#pack ~expand:false ~fill:true) () in
 
   (* Formula Toolbar *)
   let formulaToolbar = GButton.toolbar
     ~style:`BOTH
-    ~packing:formulaVBox#pack () in
+    ~packing:(formulaVBox#pack ~expand:false ~fill:true) () in
 
   (* Divide into two sections *)
   let hpaned = GPack.paned `HORIZONTAL
     ~border_width:5
-    ~packing:vbox#pack () in
+    ~packing:(vbox#pack ~expand:true ~fill:true) () in
     
-  (*  *)
-  let rightpane = GPack.paned `VERTICAL
-    ~packing:(hpaned#pack2 ~shrink:true ~resize:true) () in
-
   (* Formula Scrollbar *)
   let scrolledWindow = GBin.scrolled_window
     ~shadow_type:`ETCHED_IN
     ~hpolicy:`NEVER
     ~vpolicy:`AUTOMATIC
-    ~packing:hpaned#add1 () in
+    ~packing:(hpaned#pack1 ~shrink:true ~resize:true) () in
 
   (* Formula Text Box *)
   let formula = GSourceView2.source_view
@@ -53,22 +49,12 @@ class formulaEditor ?packing ?show ?(content="") () =
   (* Translation *)
   let translationFrame = GBin.frame
     ~label:"Traduction"
-    ~packing:rightpane#add1 () in
+    ~packing:(hpaned#pack2 ~shrink:true ~resize:true) () in
   let translation = GMisc.label
     ~text:"Traduction de la requête en langage naturel ici."
     ~width:200
     ~height:80
     ~packing:translationFrame#add () in
-
-  (* Translation *)
-  let descriptionFrame = GBin.frame
-    ~label:"Description"
-    ~packing:rightpane#add2 () in
-  let description = GMisc.label
-    ~text:"Description."
-    ~width:200
-    ~height:80
-    ~packing:descriptionFrame#add () in
 
   (* Toolbar Buttons *)
   let trueButton = formulaToolbar#insert_button
@@ -125,4 +111,5 @@ class formulaEditor ?packing ?show ?(content="") () =
 
         formula#source_buffer#set_language (Some lang);
         formula#source_buffer#set_highlight_syntax true;
+        
     end
