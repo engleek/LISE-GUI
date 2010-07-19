@@ -1,5 +1,39 @@
 open Lang
 
+let all_files () =
+  let f = GFile.filter
+	~name:"All" () in
+  f#add_pattern "*" ;
+  f
+
+let formula_filter () = 
+  GFile.filter 
+    ~name:"Formula files" 
+    ~patterns:[ "*.fm" ] ()
+
+let log_filter () = 
+  GFile.filter 
+    ~name:"Formula files" 
+    ~patterns:[ "*.log" ] ()
+
+let dialog_open_log () =
+  let file = ref None in
+  let dialog = GWindow.file_chooser_dialog 
+    ~action:`OPEN
+    ~title:"Ouvrir fichier log" () in
+  dialog#add_button_stock `CANCEL `CANCEL ;
+  dialog#add_select_button_stock `OPEN `OPEN ;
+  dialog#add_filter (log_filter ()) ;
+  dialog#add_filter (all_files ()) ;
+  begin match dialog#run () with
+  | `OPEN ->
+      file := dialog#filename;
+  | `DELETE_EVENT | `CANCEL -> ()
+  end ;
+  dialog#destroy ();
+  !file      
+
+
 let logs = [
   "c;1;4616686408;2;4;4;3;0;ser_0;",
   "1: Method call at 4616686408: 
@@ -127,6 +161,11 @@ class logView ?packing ?show () =
   let toolbar = GButton.toolbar
     ~style:`ICONS
     ~packing:(hbox#pack ~fill:true ~expand:true) () in
+  let openButton = GButton.tool_button
+    ~stock:`OPEN
+    ~packing:(fun w -> toolbar#insert w) () in
+  let formulaSpacer = GButton.separator_tool_item
+    ~packing:(fun w -> toolbar#insert w) () in
   let runButton = GButton.tool_button
     ~stock:`MEDIA_PLAY
     ~packing:(fun w -> toolbar#insert w) () in
@@ -150,8 +189,10 @@ class logView ?packing ?show () =
       ~renderer:(GTree.cell_renderer_text[], ["text", trans_col]) in
     object (self)
 
-        method runCurrentFormula () = 
-          runButton#set_stock_id `STOP;
+      method loadLog () =
+        match dialog_open_log () with
+          | None -> ()
+          | Some f -> print_endline f
     
     initializer
       logView#set_headers_visible true;
@@ -159,7 +200,9 @@ class logView ?packing ?show () =
       ignore (logView#append_column colEntryOrig);
       ignore (logView#append_column colEntryTrans);
 
-      toolbar#set_icon_size `SMALL_TOOLBAR;      
+      toolbar#set_icon_size `SMALL_TOOLBAR;
       (*runButton#connect#clicked ~callback:self#runCurrentFormula;*)
 
   end
+  
+  (* "Nom de la nouvelle formule: " *)
