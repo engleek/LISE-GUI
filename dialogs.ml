@@ -11,6 +11,11 @@ let formula_filter () =
     ~name:"Formula files" 
     ~patterns:[ "*.fm" ] ()
 
+let log_filter () = 
+  GFile.filter 
+    ~name:"Formula files" 
+    ~patterns:[ "*.log" ] ()
+
 let dialog_confirm () =
   GToolbox.question_box
     "Les formules courrantes ne sont pas sauvegardées.\nVraiment tout effacer?"
@@ -19,11 +24,10 @@ let dialog_confirm () =
     ~default:0
     ~icon:(GMisc.image ~stock:`DIALOG_WARNING ())#coerce
 
-let dialog_string () =
+let dialog_string msg () =
   GToolbox.input_string
-    "Nom de la nouvelle formule: "
+    msg
     ~title:"Nom"
-      
 
 let dialog_open parent () =
   let file = ref None in
