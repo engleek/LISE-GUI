@@ -15,6 +15,7 @@ class mainWindow ?(show=false) () =
   let window = GWindow.window
     ~width:mainWidth
     ~height:mainHeight
+    ~position:`CENTER
     ~title:string_title () in
 
   (* Main Layout Widget *)
@@ -97,10 +98,46 @@ class mainWindow ?(show=false) () =
             | Some f -> print_endline "Save file"
         else print_endline "Already have name, save file"
         
-      method print_data () =
-        let prt (elem:string) = print_endline elem in
-          List.iter prt (formulaBook#data)
+        method print_data () =
+          let prt (elem:string) = print_endline elem in
+            List.iter prt (formulaBook#data)
 
+        method welcome () =
+          let dialog = GWindow.dialog
+            ~modal:true
+            ~position:`CENTER () in
+          let welcome = GMisc.label
+            ~markup:"<b>Analyseur de log</b>"
+            ~packing:(dialog#vbox#pack ~padding:3) () in
+            
+          let newhbox = GPack.hbox
+            ~packing:(dialog#vbox#pack ~padding:3) () in
+          let newButton = GButton.button
+            ~packing:newhbox#pack () in
+          let newimage = GMisc.image
+            ~stock:`NEW
+            ~icon_size:`DIALOG
+            ~packing:newButton#add () in
+          let newlabel = GMisc.label
+            ~text:"Nouvelle série de formules."
+            ~packing:(newhbox#pack ~padding:3) () in
+            
+          let openhbox = GPack.hbox
+            ~packing:(dialog#vbox#pack ~padding:3) () in
+          let openButton = GButton.button
+            ~packing:openhbox#pack () in
+          let openimage = GMisc.image
+            ~stock:`OPEN
+            ~icon_size:`DIALOG
+            ~packing:openButton#add () in
+          let openlabel = GMisc.label
+            ~text:"Ouvrir une série de formules."
+            ~packing:(openhbox#pack ~padding:3) () in
+          dialog#vbox#set_spacing 3;
+          newButton#connect#clicked ~callback:(fun () -> self#newFormula (); dialog#destroy ());
+          openButton#connect#clicked ~callback:(fun () -> self#loadFormula (); dialog#destroy ());
+          dialog#show ();
+        
       initializer
         (* Window Sigs *)
         window#connect#destroy
@@ -114,8 +151,24 @@ class mainWindow ?(show=false) () =
         newButton#connect#clicked ~callback:(fun () -> self#print_data ());
         openButton#connect#clicked self#loadFormula;
         saveButton#connect#clicked self#saveFormula;
-        addVPButton#connect#clicked ~callback:(fun () -> formulaBook#newVP ~name:"name" ~content:"name");
-        addFormulaButton#connect#clicked ~callback:(fun () -> formulaBook#newFormula ~name:"name" ~content:"name");
+
+        addVPButton#connect#clicked ~callback:(fun () -> 
+        (match GToolbox.input_string
+           "Nom de la nouvelle variable: "
+           ~title:"Nouvelle Variable Propositionnelle"
+         with
+           None -> ()
+           | Some name -> formulaBook#newVP ~name ~content:"");
+         ());
+
+        addFormulaButton#connect#clicked ~callback:(fun () -> 
+        (match GToolbox.input_string
+           "Nom de la nouvelle formule: "
+           ~title:"Nouvelle Formule"
+         with
+           None -> ()
+           | Some name -> formulaBook#newFormula ~name ~content:"");
+         ());
 
         (* Tooltips *)
         tooltips#set_tip ~text:string_new_tooltip newButton#coerce;
@@ -129,5 +182,6 @@ class mainWindow ?(show=false) () =
 
         (* Curtains! *)
         if show then window#show ();
-        window#maximize ();
+        self#welcome();
+        (*window#maximize ();*)
     end
