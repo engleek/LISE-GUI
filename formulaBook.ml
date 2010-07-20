@@ -52,14 +52,14 @@ class formulaBook ?packing ?show () =
              List.iter prep vp_list;
              List.iter app formula_list); temp_list
       
-      method newVP ?(name="") ?(content="") =
+      method newVP ~name ?(content="") =
         (let label = new tabWidget name false () in
            let editor = new formulaEditor () in
               notebook#prepend_page ~tab_label:label#coerce editor#coerce;
               vp_list <- editor :: vp_list);
         ()
 
-      method newFormula ?(name="formule inconnue") ?(content="") =
+      method newFormula ~name ?(content="") =
         (let label = new tabWidget name true () in
             let editor = new formulaEditor () in
               notebook#prepend_page ~tab_label:label#coerce editor#coerce;
