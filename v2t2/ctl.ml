@@ -42,7 +42,7 @@ let rec satisfies (kp:Kripke.kripke) (s:Kripke.state) phi =
     | A(psi) ->
 	begin  
 	  try 
-	    List.for_all (fun x -> satisfies kp x psi) (Kripke.nextstate s kp )
+List.for_all (fun x -> satisfies kp x psi) (Kripke.nextstate s kp )
 	  with
 	      Not_found ->  failwith "à voir la def de A dans la relation de satisfaction"
 	end
@@ -77,4 +77,9 @@ let rec satisfies (kp:Kripke.kripke) (s:Kripke.state) phi =
 
 (*ATTENTION ECRIRE UNE FONCTION QUI VERIFIE QU'UNE FORMULE DONNEE EST BIEN EN CTL !!!!!!! *)
 
-let need_definition s = (true, [VP("A"), VP("B"), Next(Or(VP("C"),False) )])
+let need_definition s =
+
+ (true, [VP("A"), VP("B"), Next(Or(VP("C"),False) )])
+
+
+let make_var (s:string) :var_prop = s
