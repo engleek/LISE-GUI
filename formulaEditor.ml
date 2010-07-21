@@ -7,19 +7,24 @@ class formulaEditor ?packing ?show ?(content="") () =
 
   (* More Layout Widgets *)
   let formulaVBox = GPack.vbox
-    ~packing:(vbox#pack ~expand:true ~fill:true) () in
+    ~packing:(vbox#pack ~expand:false ~fill:true) () in
 
   (* Formula Toolbar *)
   let formulaToolbar = GButton.toolbar
     ~style:`BOTH
-    ~packing:formulaVBox#pack () in
+    ~packing:(formulaVBox#pack ~expand:false ~fill:true) () in
 
+  (* Divide into two sections *)
+  let hpaned = GPack.paned `HORIZONTAL
+    ~border_width:5
+    ~packing:(vbox#pack ~expand:true ~fill:true) () in
+    
   (* Formula Scrollbar *)
   let scrolledWindow = GBin.scrolled_window
     ~shadow_type:`ETCHED_IN
     ~hpolicy:`NEVER
     ~vpolicy:`AUTOMATIC
-    ~packing:formulaVBox#add () in
+    ~packing:(hpaned#pack1 ~shrink:true ~resize:true) () in
 
   (* Formula Text Box *)
   let formula = GSourceView2.source_view
@@ -30,8 +35,9 @@ class formulaEditor ?packing ?show ?(content="") () =
     ~show_right_margin:true
     ~right_margin_position:80
     ~smart_home_end:`ALWAYS
-    ~packing:scrolledWindow#add
-    ~height:300 () in
+    ~height:300
+    ~width:600
+    ~packing:scrolledWindow#add () in
   let language_manager = GSourceView2.source_language_manager
     ~default:true in
   let lang =
@@ -40,11 +46,15 @@ class formulaEditor ?packing ?show ?(content="") () =
       | None -> failwith "no language for text/x-ocaml"
       | Some lang -> lang in
 
-  (* Translation Label *)
+  (* Translation *)
+  let translationFrame = GBin.frame
+    ~label:"Traduction"
+    ~packing:(hpaned#pack2 ~shrink:true ~resize:true) () in
   let translation = GMisc.label
     ~text:"Traduction de la requête en langage naturel ici."
-    ~packing:(vbox#pack ~expand:true ~fill:true)
-    ~height:80 () in
+    ~width:200
+    ~height:80
+    ~packing:translationFrame#add () in
 
   (* Toolbar Buttons *)
   let trueButton = formulaToolbar#insert_button
@@ -91,6 +101,8 @@ class formulaEditor ?packing ?show ?(content="") () =
 
       method formula = formula
       
+      method data = formula#buffer#get_text ()
+      
       initializer
 
         formula#source_buffer#set_highlight_matching_brackets true;
@@ -99,4 +111,5 @@ class formulaEditor ?packing ?show ?(content="") () =
 
         formula#source_buffer#set_language (Some lang);
         formula#source_buffer#set_highlight_syntax true;
+        
     end
