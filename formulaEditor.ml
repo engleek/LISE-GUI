@@ -97,7 +97,11 @@ class formulaEditor ?packing ?show ?(content="") () =
     object (self)
       inherit GObj.widget vbox#as_widget
       
-      val mutable filename = None
+      val mutable name = ""
+      
+      method name = name
+      
+      method setName str () = name <- str
 
       method formula = formula
       
