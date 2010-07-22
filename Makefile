@@ -25,3 +25,6 @@ formulaEditor: tools
 
 clean:
 	rm -rf *.cm*
+
+packages:
+	sudo aptitude install liblablgtk2-ocaml liblablgtk2-ocaml-dev liblablgtksourceview2-ocaml liblablgtksourceview2-ocaml-dev
