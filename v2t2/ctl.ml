@@ -1,25 +1,9 @@
 (* le type des variables propositionnelles *)
 
-type var_prop =  string 
+type var_prop =  Formula.var_prop
+open Formula
 
-
-type formula = 
-    True 
-  | False 
-  | Neg of formula 
-  | VP of var_prop 
-  | Or of formula * formula 
-  | And of formula * formula
-  | Implies of formula * formula
-  | Equiv of formula * formula
-  | A of formula 
-   |E of formula
-   | Next of formula 
-| Diamond of formula 
-| Square of formula
-
-
-
+type formula = Formula.formula 
 
 
 let satisfies_vp kp s x =
@@ -83,3 +67,25 @@ let need_definition s =
 
 
 let make_var (s:string) :var_prop = s
+
+let string_to_formula s =
+  let lexbuf=Lexing.from_string s in Formula_yacc.main Formula_lex.token lexbuf 
+
+let rec formula_to_string s =
+match 
+s
+with 
+  | True -> " True "
+  | False -> " False "  
+  | VP(x) ->  x
+  | Neg (psi )-> "not("^(formula_to_string psi)^")" 
+  | Or(p1,p2) -> " ("^(formula_to_string p1) ^" OR "^(formula_to_string p1)^")"
+  | And(p1,p2) -> " ("^(formula_to_string p1) ^" AND "^(formula_to_string p2)^")"
+  | Equiv(p1,p2) -> " ("^(formula_to_string p1) ^" EQUIV "^(formula_to_string p2)^")"
+  | Implies(p1,p2) -> " ("^(formula_to_string p1) ^" IMPLY "^(formula_to_string p2)^")"
+  | Next (psi )-> " NEXT ("^(formula_to_string psi)^")" 
+ | A (psi )-> "A ("^(formula_to_string psi)^")" 
+ | E (psi )-> "E("^(formula_to_string psi)^")" 
+ | Diamond (psi )-> "DIAMOND("^(formula_to_string psi)^")" 
+ | Square (psi )-> "SQUARE("^(formula_to_string psi)^")" 
+
