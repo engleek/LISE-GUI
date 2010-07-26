@@ -9,9 +9,9 @@ let _ =
 		print_string "\n Fin lecture des logs ..\n" ;
 		flush stdout; 
 		
-		print_string (Ctl.formula_to_string (Ctl.string_to_formula ("(est-un-service) ?\136? (?\151\138( ?\138??\134\146(?\138??\136??\138?))")));
+		print_string (Ctl.formula_to_string (Ctl.string_to_formula ("(est-un-service) ?\136? (?\151\138( FALSE?\134\146(TRUE?\136?TRUE)))")));
 		flush stdout; 
-
+(* (Ctl.string_to_formula ("(est-un-service) ?\136? (?\151\138( ?\138??\134\146(?\138??\136??\138?))"))*)
 
 	(*	let kripke_log=Kripke.traitement_logs result  
 		in 
