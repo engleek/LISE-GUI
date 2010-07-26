@@ -56,6 +56,7 @@ class formulaBook ?packing ?show () =
         (let label = new tabWidget name false () in
            let editor = new formulaEditor () in
               notebook#prepend_page ~tab_label:label#coerce editor#coerce;
+              editor#setName name ();
               vp_list <- editor :: vp_list);
         ()
 
@@ -63,7 +64,40 @@ class formulaBook ?packing ?show () =
         (let label = new tabWidget name true () in
             let editor = new formulaEditor () in
               notebook#prepend_page ~tab_label:label#coerce editor#coerce;
+              editor#setName name ();
               formula_list <- editor :: formula_list);
         ()
+        
+      method save filename () =
+        try
+          let oc = open_out filename in
+            let writeVP vp =
+              begin
+                output_string oc "<variable name=\"";
+                output_string oc vp#name;
+                output_string oc "\">";
+                output_string oc vp#data;
+                output_string oc "</variable>";
+              end in
+            let writeFormula formula =
+              begin
+                output_string oc "<formula name=\"";
+                output_string oc formula#name;
+                output_string oc "\">";
+                output_string oc formula#data;
+                output_string oc "</formula>";
+              end in
+          output_string oc "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
+          output_string oc "<root>";
+          List.iter writeVP vp_list;
+          List.iter writeFormula formula_list;
+          output_string oc "</root>";
+          close_out oc;
+        with _ -> prerr_endline "Save failed"
+        
+        
+      method reset () =
+        notebook#destroy;
+        notebook = GPack.notebook ?packing ()
 
     end

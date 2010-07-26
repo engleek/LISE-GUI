@@ -6,14 +6,9 @@ let all_files () =
   f#add_pattern "*" ;
   f
 
-let formula_filter () = 
-  GFile.filter 
-    ~name:"Formula files" 
-    ~patterns:[ "*.fm" ] ()
-
 let log_filter () = 
   GFile.filter 
-    ~name:"Formula files" 
+    ~name:"Log files" 
     ~patterns:[ "*.log" ] ()
 
 let dialog_open_log () =
@@ -192,8 +187,11 @@ class logView ?packing ?show () =
       method loadLog () =
         match dialog_open_log () with
           | None -> ()
-          | Some f -> print_endline f
-    
+          | Some f -> 
+            begin
+              print_endline f
+            end
+        
     initializer
       logView#set_headers_visible true;
       logView#selection#set_mode `MULTIPLE;
@@ -201,8 +199,10 @@ class logView ?packing ?show () =
       ignore (logView#append_column colEntryTrans);
 
       toolbar#set_icon_size `SMALL_TOOLBAR;
+      ignore(openButton#connect#clicked self#loadLog);
       (*runButton#connect#clicked ~callback:self#runCurrentFormula;*)
-
+      (*logView#destroy ();*)
+      (*scrollWin#destroy ();*)
   end
   
   (* "Nom de la nouvelle formule: " *)
