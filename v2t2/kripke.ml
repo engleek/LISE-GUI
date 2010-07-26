@@ -4,8 +4,8 @@ type kripke = {states_list  : state list ; init : state list ; transitions : (st
 
 
 
-let nextstate i kripke =
-Hastbl.find Q(i) kripke.transition
+let nextstate s kripke =
+Hashtbl.find  kripke.transitions s
 
 let number_of_state kripke = List.length (kripke.states_list)
 
@@ -70,3 +70,4 @@ let traitement_logs logs =
       kripke_ex
     end
 
+let is_labeled_by kp s x = true (*  !!!!!!!!!!!!!!!!!  *)
