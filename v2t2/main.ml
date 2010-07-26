@@ -8,6 +8,11 @@ let _ =
                 print_string (Log.logs_to_string (Log.associe_protagonist result)); print_newline(); 
 		print_string "\n Fin lecture des logs ..\n" ;
 		flush stdout; 
+		
+		print_string (Ctl.formula_to_string (Ctl.string_to_formula ("(est-un-service) ?\136? (?\151\138( ?\138??\134\146(?\138??\136??\138?))")));
+		flush stdout; 
+
+
 	(*	let kripke_log=Kripke.traitement_logs result  
 		in 
 		let subst_list = Unification.state_appears_in Log.statevar1 kripke_log in 
