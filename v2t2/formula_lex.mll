@@ -13,13 +13,13 @@ rule token = parse
   |['('] {PARO}
   | [')'] {PARF}
   | [','] {VIRG}
-  | "?\136?" {AND}
-  | "?\136?" {OR}
-  | "¬" {NOT}
-  | "?\150?" {SQUARE}
-  |"?\151\138" {DIAMOND}
-  | "?\134\146" {IMPLY}
-  | "?\135\148" {EQUIV}
+  | "AND" {AND}
+  | "OR" {OR}
+  | "NOT" {NOT}
+  | "SQUARE" {SQUARE}
+  |"DIAMOND" {DIAMOND}
+  | "IMPLY" {IMPLY}
+  | "EQUIV" {EQUIV}
   | 'E' {E}
   | 'A' {A}
   | 'X' {NEXT}
