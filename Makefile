@@ -1,30 +1,11 @@
-OCC=ocamlc
-CC=ocaml
-EXEC=LISE
-SOURCES=tools.ml dialogs.ml lang.ml logView.ml formulaEditor.ml formulaBook.ml actorTree.ml mainWindow.ml main.ml
-MODULES=lablgtk.cma lablgtksourceview2.cma gtkInit.cmo
-INCLUDES=+lablgtk2
+OCAMLMAKEFILE = OCamlMakefile
 
-all: mainWindow
-	$(OCC) -I $(INCLUDES) -o $(EXEC) $(MODULES) $(SOURCES)
+SOURCES = v2t2/services_yacc.mly v2t2/services_lex.mll v2t2/protagonists_yacc.mly v2t2/protagonists_lex.mll v2t2/log.ml v2t2/log_yacc.mly v2t2/log_lex.mll v2t2/kripke.ml v2t2/formula.ml v2t2/formula_yacc.mly v2t2/formula_lex.mll v2t2/ctl.ml tools.ml dialogs.ml lang.ml logView.ml formulaEditor.ml formulaBook.ml actorTree.ml mainWindow.ml main.ml
+RESULT = LISE
+INCDIRS = +lablgtk2
+THREADS = no
 
-mainWindow: formulaBook actorTree logView dialogs lang
-	$(OCC) -I $(INCLUDES) -o $(EXEC) $(MODULES) $(SOURCES)
+OCAMLBLDFLAGS = lablgtk.cma lablgtksourceview2.cma gtkInit.cmo
+OCAMLNLDFLAGS = lablgtk.cmxa gtkInit.cmx gtkThread.cmx
 
-logView: lang
-	$(OCC) -I $(INCLUDES) -o $(EXEC) $(MODULES) $(SOURCES)
-
-formulaBook: formulaEditor
-	$(OCC) -I $(INCLUDES) -o $(EXEC) $(MODULES) $(SOURCES)
-
-formulaEditor: tools
-	$(OCC) -I $(INCLUDES) -o $(EXEC) $(MODULES) $(SOURCES)
-
-%: %.ml
-	$(CC) -I $(INCLUDES) $(MODULES) $^
-
-clean:
-	rm -rf *.cm*
-
-packages:
-	sudo aptitude install liblablgtk2-ocaml liblablgtk2-ocaml-dev liblablgtksourceview2-ocaml liblablgtksourceview2-ocaml-dev
+include $(OCAMLMAKEFILE)
