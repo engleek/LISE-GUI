@@ -2,6 +2,8 @@ open Tools
 open Dialogs
 open FormulaEditor
 
+exception No_editor
+
 class tabWidget (name:string) (isFormula:bool) () =
 
   let hbox = GPack.hbox () in
@@ -38,7 +40,12 @@ class formulaBook ?packing ?show () =
     object (self)
       inherit GObj.widget notebook#as_widget
 
-      val mutable current_formula = None
+      val mutable current_editor = None
+      method current_editor () =
+        match current_editor with
+	        Some c -> c
+          | None -> raise No_editor
+           
       val mutable vp_list = []
       val mutable formula_list = []
       
@@ -49,6 +56,7 @@ class formulaBook ?packing ?show () =
       method data = 
         (let prep (elem:formulaEditor) = temp_list <- elem#data :: temp_list in
          let app (elem:formulaEditor) = temp_list <- elem#data :: temp_list in
+             temp_list = [];
              List.iter prep vp_list;
              List.iter app formula_list); temp_list
       
@@ -57,7 +65,8 @@ class formulaBook ?packing ?show () =
            let editor = new formulaEditor () in
               notebook#prepend_page ~tab_label:label#coerce editor#coerce;
               editor#setName name ();
-              vp_list <- editor :: vp_list);
+              vp_list <- editor :: vp_list;
+              current_editor <- Some editor);
         ()
 
       method newFormula ~name ?(content="") =
@@ -65,7 +74,8 @@ class formulaBook ?packing ?show () =
             let editor = new formulaEditor () in
               notebook#prepend_page ~tab_label:label#coerce editor#coerce;
               editor#setName name ();
-              formula_list <- editor :: formula_list);
+              formula_list <- editor :: formula_list;
+              current_editor <- Some editor);
         ()
         
       method save filename () =

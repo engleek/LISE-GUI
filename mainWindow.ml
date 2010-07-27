@@ -5,6 +5,7 @@ open ActorTree
 open LogView
 open Dialogs
 open Lang
+open Ctl
 
 let mainWidth = 700
 let mainHeight = 400
@@ -46,6 +47,13 @@ class mainWindow ?(show=false) () =
     ~packing:(fun w -> toolbar#insert w) () in
 
   let spacer2 = GButton.separator_tool_item
+    ~packing:(fun w -> toolbar#insert w) () in
+  let checkButton = GButton.tool_button
+    ~stock:`SPELL_CHECK
+    ~packing:(fun w -> toolbar#insert w) () in
+
+  let spacer2 = GButton.separator_tool_item
+    ~expand:true
     ~packing:(fun w -> toolbar#insert w) () in
   let aboutButton = GButton.tool_button
     ~stock:`ABOUT
@@ -122,7 +130,8 @@ class mainWindow ?(show=false) () =
               "Valérie Viet Triem Tong";
               "Christopher Humphries"]
             ~copyright:"Copyright: copytruc" () in
-              dialog#run (); ()
+              ignore(dialog#connect#close ~callback:dialog#destroy);
+              ignore(dialog#run ());
 
         method welcome () =
           let dialog = GWindow.dialog
@@ -194,11 +203,15 @@ class mainWindow ?(show=false) () =
            | Some name -> formulaBook#newFormula ~name ~content:"");
          ());
 
+        checkButton#connect#clicked ~callback:(fun () -> (formulaBook#current_editor ())#setTranslation (formula_to_string (string_to_formula ((formulaBook#current_editor ())#data))) ());
+
         (* Tooltips *)
         tooltips#set_tip ~text:string_new_tooltip newButton#coerce;
         tooltips#set_tip ~text:string_open_tooltip openButton#coerce;
         tooltips#set_tip ~text:string_save_tooltip saveButton#coerce;
+        tooltips#set_tip ~text:string_add_vp_tooltip addVPButton#coerce;
         tooltips#set_tip ~text:string_add_formula_tooltip addFormulaButton#coerce;
+        tooltips#set_tip ~text:string_check_tooltip checkButton#coerce;
 
         (* Customizations *)
         toolbar#set_icon_size `SMALL_TOOLBAR;

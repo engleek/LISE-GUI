@@ -60,11 +60,11 @@ class formulaEditor ?packing ?show ?(content="") () =
   let trueButton = formulaToolbar#insert_button
     ~text:"⊤"
     ~tooltip:"Vrai"
-    ~callback:(fun () -> formula#buffer#insert "⊤") () in
+    ~callback:(fun () -> formula#buffer#insert "True") () in
   let trueButton = formulaToolbar#insert_button
     ~text:"⊥"
     ~tooltip:"Faux"
-    ~callback:(fun () -> formula#buffer#insert "⊥") () in
+    ~callback:(fun () -> formula#buffer#insert "False") () in
   let squareButton = formulaToolbar#insert_button
     ~text:"□"
     ~tooltip:"Vrai dans tous les états prochains"
@@ -102,6 +102,8 @@ class formulaEditor ?packing ?show ?(content="") () =
       method name = name
       
       method setName str () = name <- str
+      
+      method setTranslation str () = translation#set_label str
 
       method formula = formula
       
