@@ -11,7 +11,7 @@ let satisfies_vp kp s x =
    Kripke.is_labeled_by kp s x (*Ecrire cette fonction qui doit vérifier que x apparait dans le label de s*) 
   with _ ->failwith "satisfies_vp appelé avec autre chose qu'une variable propositionnelle" 
 
-let rec satisfies (kp:Kripke.kripke) (s:Kripke.state) phi =
+let rec satisfies (kp:Kripke.kripke) (s:Kripke.state) (phi:formula) =
   match
     phi
   with  
@@ -21,8 +21,8 @@ let rec satisfies (kp:Kripke.kripke) (s:Kripke.state) phi =
     | Neg (psi )-> not (satisfies kp s psi) 
     | Or(psi1, psi2) -> (satisfies kp s psi1) || (satisfies kp s psi2)
     | And(psi1, psi2) -> (satisfies kp s psi1) && (satisfies kp s psi2)
-    | Implies(psi1, psi2) ->( (not (satisfies kp s psi1))  || (satisfies kp s psi2))
-    | Equiv (psi1, psi2) -> (satisfies kp s (Implies (psi1, psi2))) && (satisfies kp s (Implies( psi2, psi1))) 
+    | Imply(psi1, psi2) ->( (not (satisfies kp s psi1))  || (satisfies kp s psi2))
+    | Equiv (psi1, psi2) -> (satisfies kp s (Imply (psi1, psi2))) && (satisfies kp s (Imply( psi2, psi1))) 
     | A(psi) ->
 	begin  
 	  try 
@@ -52,10 +52,10 @@ List.for_all (fun x -> satisfies kp x psi) (Kripke.nextstate s kp )
        end
 
     |Diamond (psi ) -> 
-       begin 
-	 let a = (satisfies kp s (Next(psi))) in
+       (satisfies kp s (Next(psi))) || ((List.exists (fun x-> satisfies kp x (Square psi) ) (Kripke.nextstate s kp)))
+(*	 let a = (satisfies kp s (Next(psi))) in
 	   if  a then true else  (List.exists (fun x-> satisfies kp x (Square psi) ) (Kripke.nextstate s kp))
-     end
+*)  
 
 
 
@@ -78,14 +78,19 @@ with
   | True -> " True "
   | False -> " False "  
   | VP(x) ->  x
-  | Neg (psi )-> "not("^(formula_to_string psi)^")" 
+  | Neg (psi )-> "NOT("^(formula_to_string psi)^")" 
   | Or(p1,p2) -> " ("^(formula_to_string p1) ^" OR "^(formula_to_string p1)^")"
   | And(p1,p2) -> " ("^(formula_to_string p1) ^" AND "^(formula_to_string p2)^")"
   | Equiv(p1,p2) -> " ("^(formula_to_string p1) ^" EQUIV "^(formula_to_string p2)^")"
-  | Implies(p1,p2) -> " ("^(formula_to_string p1) ^" IMPLY "^(formula_to_string p2)^")"
+  | Imply(p1,p2) -> " ("^(formula_to_string p1) ^" IMPLY "^(formula_to_string p2)^")"
   | Next (psi )-> " NEXT ("^(formula_to_string psi)^")" 
  | A (psi )-> "A ("^(formula_to_string psi)^")" 
  | E (psi )-> "E("^(formula_to_string psi)^")" 
  | Diamond (psi )-> "DIAMOND("^(formula_to_string psi)^")" 
  | Square (psi )-> "SQUARE("^(formula_to_string psi)^")" 
 
+(*Vérifie si un log représenté par la chaine de caractère s_log vérifie la formule représenté par la chaine de caractère s_phi *)
+let satifaction s_log s_phi =
+  let lexbuf= Lexing.from_string s_log  in
+  let log_kripke  =Kripke.logs_to_kripke (Log_yacc.main Log_lex.token lexbuf) in
+    satisfies (log_kripke) (List.hd (log_kripke.Kripke.init)) (string_to_formula s_phi)
