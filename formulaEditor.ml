@@ -60,40 +60,40 @@ class formulaEditor ?packing ?show ?(content="") () =
   let trueButton = formulaToolbar#insert_button
     ~text:"⊤"
     ~tooltip:"Vrai"
-    ~callback:(fun () -> formula#buffer#insert "True") () in
+    ~callback:(fun () -> formula#buffer#insert "TRUE") () in
   let trueButton = formulaToolbar#insert_button
     ~text:"⊥"
     ~tooltip:"Faux"
-    ~callback:(fun () -> formula#buffer#insert "False") () in
+    ~callback:(fun () -> formula#buffer#insert "FALSE") () in
   let squareButton = formulaToolbar#insert_button
     ~text:"□"
     ~tooltip:"Vrai dans tous les états prochains"
-    ~callback:(fun () -> formula#buffer#insert "□") () in
+    ~callback:(fun () -> formula#buffer#insert "SQUARE") () in
   let lozengeButton = formulaToolbar#insert_button
     ~text:"◊"
     ~tooltip:"Vrai dans au moins un des états prochains"
-    ~callback:(fun () -> formula#buffer#insert "◊") () in
+    ~callback:(fun () -> formula#buffer#insert "DIAMOND") () in
   let spacer1 = formulaToolbar#insert_space () in
   let notButton = formulaToolbar#insert_button
     ~text:"¬"
     ~tooltip:"Négation"
-    ~callback:(fun () -> formula#buffer#insert "¬") () in
+    ~callback:(fun () -> formula#buffer#insert "NOT") () in
   let andButton = formulaToolbar#insert_button
     ~text:"∧"
     ~tooltip:"Et"
-    ~callback:(fun () -> formula#buffer#insert "∧") () in
+    ~callback:(fun () -> formula#buffer#insert "AND") () in
   let orButton = formulaToolbar#insert_button
     ~text:"∨"
     ~tooltip:"Ou"
-    ~callback:(fun () -> formula#buffer#insert "∨") () in
+    ~callback:(fun () -> formula#buffer#insert "OR") () in
   let rarrowButton = formulaToolbar#insert_button
     ~text:"→"
     ~tooltip:"Implique"
-    ~callback:(fun () -> formula#buffer#insert "→") () in
+    ~callback:(fun () -> formula#buffer#insert "IMPLY") () in
   let rarrowButton = formulaToolbar#insert_button
     ~text:"⇔"
     ~tooltip:"Equivalent"
-    ~callback:(fun () -> formula#buffer#insert "⇔") () in    
+    ~callback:(fun () -> formula#buffer#insert "EQUIV") () in    
     object (self)
       inherit GObj.widget vbox#as_widget
       
