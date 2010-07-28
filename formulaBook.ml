@@ -65,6 +65,7 @@ class formulaBook ?packing ?show () =
            let editor = new formulaEditor () in
               notebook#prepend_page ~tab_label:label#coerce editor#coerce;
               editor#setName name ();
+              editor#formula#buffer#set_text content;
               vp_list <- editor :: vp_list;
               current_editor <- Some editor);
         ()
@@ -74,6 +75,7 @@ class formulaBook ?packing ?show () =
             let editor = new formulaEditor () in
               notebook#prepend_page ~tab_label:label#coerce editor#coerce;
               editor#setName name ();
+              editor#formula#buffer#set_text content;
               formula_list <- editor :: formula_list;
               current_editor <- Some editor);
         ()
@@ -86,7 +88,11 @@ class formulaBook ?packing ?show () =
                 output_string oc "<variable name=\"";
                 output_string oc vp#name;
                 output_string oc "\">";
+                output_string oc "<data>";
                 output_string oc vp#data;
+                output_string oc "</data>";
+                output_string oc "<description>";
+                output_string oc "</description>";
                 output_string oc "</variable>";
               end in
             let writeFormula formula =
@@ -94,7 +100,11 @@ class formulaBook ?packing ?show () =
                 output_string oc "<formula name=\"";
                 output_string oc formula#name;
                 output_string oc "\">";
+                output_string oc "<data>";
                 output_string oc formula#data;
+                output_string oc "</data>";
+                output_string oc "<description>";
+                output_string oc "</description>";
                 output_string oc "</formula>";
               end in
           output_string oc "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
