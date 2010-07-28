@@ -34,7 +34,7 @@ formula:
 | formula AND formula {Formula.And($1,$3)} ;
 | PARO formula OR formula PARF {Formula.Or($2,$4)} ;
 | formula OR formula {Formula.Or($1,$3)} ;
-| PARO formula IMPLY formula PARF {Formula.Implies($2,$4)} ;
+| PARO formula IMPLY formula PARF {Formula.Imply($2,$4)} ;
 | PARO formula EQUIV formula PARF {Formula.Equiv($2,$4)} ;
 | A formula {Formula.A($2)}
 | E formula {Formula.E($2)}

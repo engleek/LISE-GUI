@@ -53,6 +53,7 @@ List.for_all (fun x -> satisfies kp x psi) (Kripke.nextstate s kp )
 
     |Diamond (psi ) -> 
        (satisfies kp s (Next(psi))) || ((List.exists (fun x-> satisfies kp x (Square psi) ) (Kripke.nextstate s kp)))
+
 (*	 let a = (satisfies kp s (Next(psi))) in
 	   if  a then true else  (List.exists (fun x-> satisfies kp x (Square psi) ) (Kripke.nextstate s kp))
 *)  
@@ -90,7 +91,15 @@ with
  | Square (psi )-> "SQUARE("^(formula_to_string psi)^")" 
 
 (*Vérifie si un log représenté par la chaine de caractère s_log vérifie la formule représenté par la chaine de caractère s_phi *)
-let satifaction s_log s_phi =
+let satifaction_log_from_string s_log s_phi =
   let lexbuf= Lexing.from_string s_log  in
   let log_kripke  =Kripke.logs_to_kripke (Log_yacc.main Log_lex.token lexbuf) in
     satisfies (log_kripke) (List.hd (log_kripke.Kripke.init)) (string_to_formula s_phi)
+
+(*Vérifie si un log représenté par LE FICHIER s_log vérifie la formule représenté par la chaine de caractère s_phi *)
+let satifaction_log_from_file s_log s_phi =
+  let lexbuf= Lexing.from_channel (open_in s_log)  in
+  let log_kripke  =Kripke.logs_to_kripke (Log_yacc.main Log_lex.token lexbuf) in
+    satisfies (log_kripke) (List.hd (log_kripke.Kripke.init)) (string_to_formula s_phi)
+
+
