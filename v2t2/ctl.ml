@@ -1,7 +1,6 @@
-(* le type des variables propositionnelles *)
-
-type var_prop =  Formula.var_prop
 open Formula
+type var_prop =  Formula.var_prop
+
 
 type formula = Formula.formula 
 
