@@ -94,7 +94,7 @@ class mainWindow ?(show=false) () =
       method data_list = formulaBook#data
 
       method private renew () =
-        formulaBook#reset;
+        formulaBook#reset ();
         unsaved = true;
         formulaBook#newFormula ~name:"Racine" ~content:""
 
@@ -107,10 +107,19 @@ class mainWindow ?(show=false) () =
         end
         else self#renew ()
 
+      method parseFormulaFile file =
+        let xml = Xml.parse_file file in
+          let childList = Xml.children xml in
+            let typematch child =
+              if (Xml.tag child) = "formula" then print_endline "formula"
+              else if (Xml.tag child) = "variable" then print_endline "variable"
+              else print_endline "unknown" in
+                List.iter typematch childList;
+
       method loadFormula () =
         match dialog_open window () with
           | None -> ()
-          | Some f -> print_endline f
+          | Some f -> self#parseFormulaFile f
             
       method saveFormula () = 
         if formulaName = "" then

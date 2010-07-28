@@ -107,7 +107,8 @@ class formulaBook ?packing ?show () =
         
         
       method reset () =
-        notebook#destroy;
-        notebook = GPack.notebook ?packing ()
-
+        while notebook#current_page != -1 do
+          notebook#remove_page (notebook#current_page)
+        done
+        
     end
