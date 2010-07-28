@@ -1,16 +1,18 @@
 let _ =
          (* try *)
-            let lexbuf = Lexing.from_channel (open_in "/Users/val/Documents/projets/Lise/traceur/code_ocaml/LISE_logs/logosDir0/events") in
-	      print_string("Ouverture du fichier de log \n") ; 
-	      flush stdout;
-              let result = Log_yacc.main Log_lex.token lexbuf in
-		begin 
-                print_string (Log.logs_to_string (Log.associe_protagonist result)); print_newline(); 
-		print_string "\n Fin lecture des logs ..\n" ;
-		flush stdout; 
-		
-		print_string (Ctl.formula_to_string (Ctl.string_to_formula ("(est-un-service) ?\136? (?\151\138( FALSE?\134\146(TRUE?\136?TRUE)))")));
-		flush stdout; 
+  let lexbuf = Lexing.from_channel (open_in "/Users/val/Documents/projets/Lise/traceur/code_ocaml/LISE_logs/logosDir0/events") in
+    print_string("Ouverture du fichier de log \n") ; 
+    flush stdout;
+    let result = Log_yacc.main Log_lex.token lexbuf in
+      begin 
+        print_string (Log.log_collection_to_string (result)); print_newline(); 
+	print_string "\n Fin lecture des logs ..\n" ;
+	flush stdout; 
+
+	let log=  "/Users/val/Documents/projets/Lise/traceur/code_ocaml/LISE_logs/logosDir0/events"
+	and  phi = "DIAMOND(Interface_0)"
+in  if Ctl.satifaction_log_from_file log phi then  print_string "\nFormule satisfaite\n" else print_string "\nFormule non satisfaite\n"
+
 (* (Ctl.string_to_formula ("(est-un-service) ?\136? (?\151\138( ?\138??\134\146(?\138??\136??\138?))"))*)
 
 	(*	let kripke_log=Kripke.traitement_logs result  

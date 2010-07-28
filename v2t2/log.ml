@@ -1,3 +1,20 @@
+type log_elem = string list
+type log_collection = log_elem list
+
+let make_call  x1 x2 x3 x4 x5 x6 x7 x8 =
+["call";"call_ident_"^x1;"Caller_"^x3; "Service_"^x4;"Interface_"^x5; "Provider_"^x6;"Function_"^x7 ]@x8
+
+
+let make_response x1 x2 x3 =
+["response";"response_ident_"^x1;"Output_"^x3 ]
+
+let log_elem_to_string l = List.fold_left (fun x y -> x^" ; "^y) "\n" l
+
+let log_collection_to_string (l:log_collection) =  
+List.fold_left (fun x y ->( x^" ; "^(log_elem_to_string y))) "\n" l
+
+(*
+
 type parametre_de_log = Const of string | Var of int  
 
 
@@ -202,3 +219,5 @@ let associe_protagonist logs =
 
 let statevar1 = create_log_call (Var 1) (Var 2) (Var 9 ) (Var 3) (Var 4) (Var 5) (Var 7) [Var(8)]
 
+
+*)

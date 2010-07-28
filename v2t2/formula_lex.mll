@@ -22,6 +22,6 @@ rule token = parse
   | "EQUIV" {EQUIV}
   | 'E' {E}
   | 'A' {A}
-  | 'X' {NEXT}
+  | "NEXT" {NEXT}
   |  ( ['a'-'z']* | ['A'-'Z']*|['0'-'9']*| ['/''_' '-' ] )* as lxm  { STRING (lxm)}
  

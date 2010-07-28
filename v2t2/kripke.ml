@@ -1,6 +1,6 @@
 type state = Q of int 
 
-type kripke = {states_list  : state list ; init : state list ; transitions : (state,state list) Hashtbl.t ; label : (state ,Log.log_line ) Hashtbl.t }
+type kripke = {states_list  : state list ; init : state list ; transitions : (state,state list) Hashtbl.t ; label : (state ,Log.log_elem ) Hashtbl.t }
 
 
 
@@ -19,7 +19,7 @@ label =x4}
 let state_to_string q = let Q(x)=q in " Q("^(string_of_int x)^") "
 
 let label_of_a_state q l=
-Hashtbl.find q l
+Hashtbl.find  l.label q
  
 let rec states_list_to_string stl =
 match 
@@ -31,7 +31,7 @@ with
 
 
 let rec states_with_label_list_to_string stl label =
-Hashtbl.fold  (fun q -> fun lbl -> fun s -> (s^("\n--\n "^(state_to_string q)^"with label "^(Log.log_line_to_string(lbl))^"\n" )))  label ""
+Hashtbl.fold  (fun q -> fun lbl -> fun s -> (s^("\n--\n "^(state_to_string q)^"with label "^(Log.log_elem_to_string(lbl))^"\n" )))  label ""
 
 
 let rec transitions_to_string trans  = 
@@ -63,11 +63,11 @@ let logs_to_kripke logs  =
 
 
 let traitement_logs logs =
-  let kripke_ex = logs_to_kripke  ((Log.associe_protagonist  logs))
+  let kripke_ex = logs_to_kripke   logs
   in 
     begin
       print_string (kripke_to_string( kripke_ex)); 
       kripke_ex
     end
 
-let is_labeled_by kp s x = true (*  !!!!!!!!!!!!!!!!!  *)
+let is_labeled_by kp s x =List.mem x (Hashtbl.find (kp.label) s)
