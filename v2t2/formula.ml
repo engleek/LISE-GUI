@@ -10,7 +10,7 @@ type formula =
   | VP of var_prop 
   | Or of formula * formula 
   | And of formula * formula
-  | Implies of formula * formula
+  | Imply of formula * formula
   | Equiv of formula * formula
   | A of formula 
    |E of formula
