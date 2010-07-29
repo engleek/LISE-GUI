@@ -11,8 +11,9 @@ let _ =
 
 	let log=  "/Users/val/Documents/projets/Lise/traceur/code_ocaml/LISE_logs/logosDir0/events"
 	and  phi = "DIAMOND(Interface_0)"
-in  if Ctl.satifaction_log_from_file log phi then  print_string "\nFormule satisfaite\n" else print_string "\nFormule non satisfaite\n"
-
+in  if Ctl.satifaction_log_from_file log phi then  print_string "\nFormule satisfaite\n" else print_string "\nFormule non satisfaite\n";
+ let lexbuf= Lexing.from_channel (open_in log)  in
+print_string (Log.translate ( (List.nth (Log_yacc.main Log_lex.token lexbuf) 2)))
 (* (Ctl.string_to_formula ("(est-un-service) ?\136? (?\151\138( ?\138??\134\146(?\138??\136??\138?))"))*)
 
 	(*	let kripke_log=Kripke.traitement_logs result  

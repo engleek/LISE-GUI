@@ -16,16 +16,26 @@ List.fold_left (fun x y ->( x^" "^(log_elem_to_string y)^" ")) "\n" l
 let translate log =
   let translate_call log =
 ("Appel de service Numero "^(let x = (List.nth log 1) in (String.sub x 11 ((String.length x)-11 )))^
-", l'appelant est "^(let x = (List.nth log 2) in (String.sub x 7 ((String.length x)-7 )))^
-" le service appelé est "^(let x = (List.nth log 3) in (String.sub x 8 ((String.length x)-8 )))^
-" à l'aide de l'interface "^(let x = (List.nth log 4) in (String.sub x 10 ((String.length x)-10 )))^
-" fournit par "^(let x = (List.nth log 5) in (String.sub x 9 ((String.length x)-9 )))^
-" la fonction appelée est "^(let x = (List.nth log 6) in (String.sub x 9 ((String.length x)-9 )))^
-"avec les paramètres "
+", \n l'appelant est "^(let x = (List.nth log 2) in (String.sub x 7 ((String.length x)-7 )))^
+", \n le service appele est "^(let x = (List.nth log 3) in (String.sub x 8 ((String.length x)-8 )))^
+", \n en utilisant de l'interface "^(let x = (List.nth log 4) in (String.sub x 10 ((String.length x)-10 )))^
+", \n fournit par "^(let x = (List.nth log 5) in (String.sub x 9 ((String.length x)-9 )))^
+", \n la fonction appelee est "^(let x = (List.nth log 6) in (String.sub x 9 ((String.length x)-9 )))^
+", \n avec les parametres "^(List.nth log 7)^"\n"
 
 )
+
+
   in 
-  let translate_response log = "Reponse à l'appel Numéro"
+  let translate_response log =
+("Reponse a l'appel de service Numero "^(let x = (List.nth log 1) in (String.sub x 15 ((String.length x)-15 )))^
+"\n avec la sortie "^(let x = (List.nth log 2) in (String.sub x 7 ((String.length x)-7 )))
+)
+
+
+  
+
+
   in 
     match
       List.hd log
@@ -33,6 +43,12 @@ let translate log =
     "call" -> translate_call log
       |"response"-> translate_response log 
       | _ -> failwith "Format de Log innattendu"
+
+
+
+
+
+
 
 (*
 
