@@ -5,7 +5,7 @@ RESULT = LISE
 INCDIRS = +lablgtk2 
 THREADS = no
 
-OCAMLBLDFLAGS = lablgtk.cma lablgtksourceview2.cma gtkInit.cmo
-OCAMLNLDFLAGS = lablgtk.cmxa gtkInit.cmx gtkThread.cmx
+OCAMLBLDFLAGS = lablgtk.cma lablgtksourceview2.cma xml-light.cma gtkInit.cmo
+OCAMLNLDFLAGS = lablgtk.cmxa xml-light.cmxa gtkInit.cmx gtkThread.cmx
 
 include $(OCAMLMAKEFILE)

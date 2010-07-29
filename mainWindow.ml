@@ -94,7 +94,7 @@ class mainWindow ?(show=false) () =
       method data_list = formulaBook#data
 
       method private renew () =
-        formulaBook#reset;
+        formulaBook#reset ();
         unsaved = true;
         formulaBook#newFormula ~name:"Racine" ~content:""
 
@@ -107,10 +107,26 @@ class mainWindow ?(show=false) () =
         end
         else self#renew ()
 
+      method parseFormulaFile file =
+        let xml = Xml.parse_file file in
+          let childList = Xml.children xml in
+            let typematch child =
+              if (Xml.tag child) = "formula" then formulaBook#newFormula ~name:(Xml.attrib child "name") ~content:(Xml.pcdata (List.hd (Xml.children (List.hd (Xml.children child)))))
+              else if (Xml.tag child) = "variable" then formulaBook#newVP ~name:(Xml.attrib child "name") ~content:(Xml.pcdata (List.hd (Xml.children (List.hd (Xml.children child)))))
+              else print_endline "unknown" in
+                if unsaved then
+                begin match dialog_confirm () with
+                  | 1 -> formulaBook#reset (); List.iter typematch childList
+                  | 2 -> ()
+                  | _ -> ()
+                end
+                else formulaBook#reset (); List.iter typematch childList
+                
+
       method loadFormula () =
         match dialog_open window () with
           | None -> ()
-          | Some f -> print_endline f
+          | Some f -> self#parseFormulaFile f
             
       method saveFormula () = 
         if formulaName = "" then
@@ -165,7 +181,7 @@ class mainWindow ?(show=false) () =
             ~text:"Ouvrir une série de formules."
             ~packing:(openhbox#pack ~padding:3) () in
           dialog#vbox#set_spacing 3;
-          newButton#connect#clicked ~callback:(fun () -> self#renew (); dialog#destroy ());
+          newButton#connect#clicked ~callback:(fun () -> self#newSet (); dialog#destroy ());
           openButton#connect#clicked ~callback:(fun () -> self#loadFormula (); dialog#destroy ());
           dialog#show ();
         

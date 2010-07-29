@@ -28,6 +28,12 @@ let dialog_open_log () =
   dialog#destroy ();
   !file      
 
+let create s =
+  let lexbuf = Lexing.from_channel (open_in s)  in
+    let log_collection = Log_yacc.main Log_lex.token lexbuf in
+      List.map (fun log_elementaire -> let chaine = List.fold_left (fun x  y -> x^y) "" log_elementaire
+        in (chaine,chaine)) log_collection
+
 
 let logs = [
   "c;1;4616686408;2;4;4;3;0;ser_0;",
@@ -150,8 +156,6 @@ class logView ?packing ?show () =
   let hbox = GPack.hbox
     ~packing:(vbox#pack ~fill:true ~expand:false) () in
 
-  let model = make_model logs in
-
   (* Toolbar *)
   let toolbar = GButton.toolbar
     ~style:`ICONS
@@ -175,7 +179,6 @@ class logView ?packing ?show () =
     ~packing:(vbox#pack ~fill:true ~expand:true) () in
 
   let logView = GTree.view
-    ~model
     ~packing:scrollWin#add () in
 
   let colEntryOrig = GTree.view_column ~title:string_original ()
@@ -189,7 +192,7 @@ class logView ?packing ?show () =
           | None -> ()
           | Some f -> 
             begin
-              print_endline f
+              logView#set_model (Some (make_model (create f))#coerce)
             end
         
     initializer
