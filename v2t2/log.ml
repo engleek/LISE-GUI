@@ -8,10 +8,31 @@ let make_call  x1 x2 x3 x4 x5 x6 x7 x8 =
 let make_response x1 x2 x3 =
 ["response";"response_ident_"^x1;"Output_"^x3 ]
 
-let log_elem_to_string l = List.fold_left (fun x y -> x^" ; "^y) "\n" l
+let log_elem_to_string l = List.fold_left (fun x y -> x^" "^y^";") "\n" l
 
 let log_collection_to_string (l:log_collection) =  
-List.fold_left (fun x y ->( x^" ; "^(log_elem_to_string y))) "\n" l
+List.fold_left (fun x y ->( x^" "^(log_elem_to_string y)^" ")) "\n" l
+
+let translate log =
+  let translate_call log =
+("Appel de service Numero "^(let x = (List.nth log 1) in (String.sub x 11 ((String.length x)-11 )))^
+", l'appelant est "^(let x = (List.nth log 2) in (String.sub x 7 ((String.length x)-7 )))^
+" le service appelé est "^(let x = (List.nth log 3) in (String.sub x 8 ((String.length x)-8 )))^
+" à l'aide de l'interface "^(let x = (List.nth log 4) in (String.sub x 10 ((String.length x)-10 )))^
+" fournit par "^(let x = (List.nth log 5) in (String.sub x 9 ((String.length x)-9 )))^
+" la fonction appelée est "^(let x = (List.nth log 6) in (String.sub x 9 ((String.length x)-9 )))^
+"avec les paramètres "
+
+)
+  in 
+  let translate_response log = "Reponse à l'appel Numéro"
+  in 
+    match
+      List.hd log
+    with 
+    "call" -> translate_call log
+      |"response"-> translate_response log 
+      | _ -> failwith "Format de Log innattendu"
 
 (*
 
