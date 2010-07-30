@@ -107,7 +107,7 @@ class mainWindow ?(show=false) () =
         end
         else self#renew ()
 
-      method parseFormulaFile file =
+      method parseFormulaFile file = (*
         let xml = Xml.parse_file file in
           let childList = Xml.children xml in
             let typematch child =
@@ -120,7 +120,7 @@ class mainWindow ?(show=false) () =
                   | 2 -> ()
                   | _ -> ()
                 end
-                else formulaBook#reset (); List.iter typematch childList
+                else formulaBook#reset (); List.iter typematch childList *) ()
                 
 
       method loadFormula () =
