@@ -17,15 +17,21 @@ class tabWidget (name:string) (isFormula:bool) () =
     ~text:name
     ~packing:hbox#add () in
 
-  let validityIcon = GMisc.image
-    ~file:"rc/bullet_green.png"
+  (*let validityIcon = GMisc.image
+    ~file:"rc/bullet_orange.png"
     ~icon_size:`MENU
-    ~packing:hbox#add () in
+    ~packing:hbox#add () in*)
 
     object (self)
       inherit GObj.widget hbox#as_widget
       
       method label () = label
+      
+      (*method validate () =
+        validityIcon#set_file "rc/bullet_green.png"
+
+      method invalidate () =
+        validityIcon#set_file "rc/bullet_red.png"*)
       
       initializer
         if isFormula then typeIcon#set_file "rc/plugin.png"
@@ -41,15 +47,18 @@ class formulaBook ?packing ?show () =
       inherit GObj.widget notebook#as_widget
 
       val mutable current_editor = None
-      method current_editor () =
-        match current_editor with
-	        Some c -> c
-          | None -> raise No_editor
-           
+                 
       val mutable vp_list = []
       val mutable formula_list = []
+      val mutable editor_list= []
       
       val mutable temp_list = ([] : string list)
+
+      method current_editor () =
+        List.nth editor_list (notebook#current_page)
+        (*match current_editor with
+	        Some c -> c
+          | None -> raise No_editor*)
 
       method notebook = notebook;
       
@@ -67,7 +76,9 @@ class formulaBook ?packing ?show () =
               editor#setName name ();
               editor#formula#buffer#set_text content;
               vp_list <- editor :: vp_list;
-              current_editor <- Some editor);
+              editor_list <- editor :: editor_list;
+              current_editor <- Some editor;
+              notebook#goto_page 0);
         ()
 
       method newFormula ~name ?(content="") =
@@ -77,7 +88,9 @@ class formulaBook ?packing ?show () =
               editor#setName name ();
               editor#formula#buffer#set_text content;
               formula_list <- editor :: formula_list;
-              current_editor <- Some editor);
+              editor_list <- editor :: editor_list;
+              current_editor <- Some editor;
+              notebook#goto_page 0);
         ()
         
       method save filename () =
@@ -114,8 +127,7 @@ class formulaBook ?packing ?show () =
           output_string oc "</root>";
           close_out oc;
         with _ -> prerr_endline "Save failed"
-        
-        
+              
       method reset () =
         while notebook#current_page != -1 do
           notebook#remove_page (notebook#current_page)

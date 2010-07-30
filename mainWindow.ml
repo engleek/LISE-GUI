@@ -220,6 +220,13 @@ class mainWindow ?(show=false) () =
          ());
 
         checkButton#connect#clicked ~callback:(fun () -> (formulaBook#current_editor ())#setTranslation (formula_to_string (string_to_formula ((formulaBook#current_editor ())#data))) ());
+        
+        logView#connectPlay ~callback:(fun () -> 
+          try
+            if (satifaction_log_from_file (logView#logFile) ((formulaBook#current_editor ())#data))
+            then logView#logError true ()
+            else logView#logError false ()
+          with Parsing.Parse_error -> ignore(GToolbox.message_box "Oups!" "Formule invalide!"));
 
         (* Tooltips *)
         tooltips#set_tip ~text:string_new_tooltip newButton#coerce;

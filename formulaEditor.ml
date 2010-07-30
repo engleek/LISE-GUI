@@ -98,16 +98,20 @@ class formulaEditor ?packing ?show ?(content="") () =
       inherit GObj.widget vbox#as_widget
       
       val mutable name = ""
-      
+            
       method name = name
       
       method setName str () = name <- str
-      
+            
       method setTranslation str () = translation#set_label str
 
       method formula = formula
       
       method data = formula#buffer#get_text ()
+      
+      (*method showValid = label#validate
+      
+      method showInvalid = label#invalidate*)
       
       initializer
 
