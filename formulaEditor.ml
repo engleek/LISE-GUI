@@ -94,6 +94,18 @@ class formulaEditor ?packing ?show ?(content="") () =
     ~text:"⇔"
     ~tooltip:"Equivalent"
     ~callback:(fun () -> formula#buffer#insert "EQUIV") () in    
+  let rarrowButton = formulaToolbar#insert_button
+    ~text:"A"
+    ~tooltip:"Tout les chemins"
+    ~callback:(fun () -> formula#buffer#insert "A") () in    
+  let rarrowButton = formulaToolbar#insert_button
+    ~text:"E"
+    ~tooltip:"Il existe un chemin"
+    ~callback:(fun () -> formula#buffer#insert "E") () in    
+  let rarrowButton = formulaToolbar#insert_button
+    ~text:"E"
+    ~tooltip:"Chemin suivant"
+    ~callback:(fun () -> formula#buffer#insert "NEXT") () in    
     object (self)
       inherit GObj.widget vbox#as_widget
       
