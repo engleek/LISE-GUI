@@ -94,6 +94,7 @@ class formulaEditor ?packing ?show ?(content="") () =
     ~text:"⇔"
     ~tooltip:"Equivalent"
     ~callback:(fun () -> formula#buffer#insert "EQUIV") () in    
+  let spacer2 = formulaToolbar#insert_space () in
   let rarrowButton = formulaToolbar#insert_button
     ~text:"A"
     ~tooltip:"Tout les chemins"
