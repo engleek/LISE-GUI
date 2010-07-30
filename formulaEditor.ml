@@ -103,7 +103,7 @@ class formulaEditor ?packing ?show ?(content="") () =
     ~tooltip:"Il existe un chemin"
     ~callback:(fun () -> formula#buffer#insert "E") () in    
   let rarrowButton = formulaToolbar#insert_button
-    ~text:"E"
+    ~text:"X"
     ~tooltip:"Chemin suivant"
     ~callback:(fun () -> formula#buffer#insert "NEXT") () in    
     object (self)
