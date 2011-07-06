@@ -130,17 +130,17 @@ let yyact = [|
   (fun _ -> failwith "parser")
 ; (fun __caml_parser_env ->
     Obj.repr(
-# 11 "services_yacc.mly"
+# 11 "v2t2/services_yacc.mly"
           ([])
-# 136 "services_yacc.ml"
+# 136 "v2t2/services_yacc.ml"
                : (int*int*string*int*int*int) list))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 1 : 'prota) in
     let _2 = (Parsing.peek_val __caml_parser_env 0 : (int*int*string*int*int*int) list) in
     Obj.repr(
-# 12 "services_yacc.mly"
+# 12 "v2t2/services_yacc.mly"
                (_1 :: _2)
-# 144 "services_yacc.ml"
+# 144 "v2t2/services_yacc.ml"
                : (int*int*string*int*int*int) list))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 12 : int) in
@@ -150,9 +150,9 @@ let yyact = [|
     let _9 = (Parsing.peek_val __caml_parser_env 4 : int) in
     let _11 = (Parsing.peek_val __caml_parser_env 2 : int) in
     Obj.repr(
-# 13 "services_yacc.mly"
+# 13 "v2t2/services_yacc.mly"
                                                                                        (_1,_3,_5,_7,_9,_11)
-# 156 "services_yacc.ml"
+# 156 "v2t2/services_yacc.ml"
                : 'prota))
 (* Entry main *)
 ; (fun __caml_parser_env -> raise (Parsing.YYexit (Parsing.peek_val __caml_parser_env 0)))
