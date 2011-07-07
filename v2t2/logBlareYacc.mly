@@ -11,7 +11,6 @@
 %token CR_OUV
 %token CR_FER
 %token DXPTS
-%token TIRET
 %token ALERT_BLARE
 %start main 
 %type <Log.log_elem list> main

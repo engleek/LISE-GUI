@@ -31,7 +31,8 @@ let log_elem_to_string l = List.fold_left (fun x y -> x^" "^y^";") "\n" l
 let log_collection_to_string (l:log_collection) =  
 List.fold_left (fun x y ->( x^" "^(log_elem_to_string y)^" ")) "\n" l
 
-let translate log =
+let translate log = "toto"
+(*
   let translate_call log =
 ("Appel de service Numero "^(let x = (List.nth log 1) in (String.sub x 11 ((String.length x)-11 )))^
 ", \n l'appelant est "^(let x = (List.nth log 2) in (String.sub x 7 ((String.length x)-7 )))^
@@ -50,10 +51,6 @@ let translate log =
 "\n avec la sortie "^(let x = (List.nth log 2) in (String.sub x 7 ((String.length x)-7 )))
 )
 
-
-  
-
-
   in 
     match
       List.hd log
@@ -62,7 +59,7 @@ let translate log =
       |"response"-> translate_response log 
       | _ -> failwith "Format de Log innattendu"
 
-
+*) 
 (*fin version Lise *)
 
 
