@@ -1,9 +1,27 @@
 type log_elem = string list
 type log_collection = log_elem list
 
+(* ajouté pour les logs Blare *)
+
+let rec list_tag_to_string (l:string list) =  
+List.fold_left (fun x y ->( x^" "^(y)^" ")) "\n" l
+
+let make_log  x1 x2 x3 x4 x5 x6 x7 x8 =
+["timestamp=("^x1^")";"from_source_type"^x2;" Name_"^x3; "Id_"^x4;"to_destination_type"^x5;" Name_"^x6; "Id_"^x7;"Using_Tag_"^(list_tag_to_string x8) ]
+
+let make_nom nom =
+  match 
+    nom 
+  with 
+      p::[] -> "process_"^p
+    |p::t::[] ->  "process_"^p^"_:thread_"^t
+    |_ -> failwith "erreur de parsing"
+(* fin ajout *)
+
+
+(* version Lise *)
 let make_call  x1 x2 x3 x4 x5 x6 x7 x8 =
 ["call";"call_ident_"^x1;"Caller_"^x3; "Service_"^x4;"Interface_"^x5; "Provider_"^x6;"Function_"^x7 ]@x8
-
 
 let make_response x1 x2 x3 =
 ["response";"response_ident_"^x1;"Output_"^x3 ]
@@ -45,8 +63,7 @@ let translate log =
       | _ -> failwith "Format de Log innattendu"
 
 
-
-
+(*fin version Lise *)
 
 
 

@@ -1,17 +1,26 @@
 let _ =
          (* try *)
-  let lexbuf = Lexing.from_channel (open_in "/Users/val/Documents/projets/Lise/traceur/code_ocaml/LISE_logs/logosDir0/events") in
-    print_string("Ouverture du fichier de log \n") ; 
-    flush stdout;
-    let result = Log_yacc.main Log_lex.token lexbuf in
-      begin 
-        print_string (Log.log_collection_to_string (result)); print_newline(); 
-	print_string "\n Fin lecture des logs ..\n" ;
-	flush stdout; 
+  (*pour LISE let lexbuf = Lexing.from_channel (open_in "/Users/val/Documents/projets/Lise/traceur/code_ocaml/LISE_logs/logosDir0/events") in
+  *)
+   let lexbuf = Lexing.from_channel (open_in "/Users/val/Documents/dev/anaLISEeur/LISE-GUI/v2t2/logBlareTEST.txt") in 
 
+ print_string("Ouverture du fichier de log \n") ; 
+    flush stdout;
+    let result = LogBlareYacc.main LogBlareLex.token lexbuf in
+      begin 
+	print_string "\n Fin lecture des logs ..\n" ;
+	flush stdout 
+      end
+
+
+(*;
 	let log=  "/Users/val/Documents/projets/Lise/traceur/code_ocaml/LISE_logs/logosDir0/events"
 	and  phi = "DIAMOND(Interface_0)"
-in  if Ctl.satifaction_log_from_file log phi then  print_string "\nFormule satisfaite\n" else print_string "\nFormule non satisfaite\n";
+in  if Ctl.satifaction_log_from_file log phi then  print_string "\nFormule satisfaite\n" else print_string "\nFormule non satisfaite\n"
+      
+
+
+
  let lexbuf= Lexing.from_channel (open_in log)  in
 print_string (Log.translate ( (List.nth (Log_yacc.main Log_lex.token lexbuf) 2)))
 (* (Ctl.string_to_formula ("(est-un-service) ?\136? (?\151\138( ?\138??\134\146(?\138??\136??\138?))"))*)
@@ -39,3 +48,4 @@ print_string (Log.translate ( (List.nth (Log_yacc.main Log_lex.token lexbuf) 2))
 une qui associe le label d'un état
 une qui associe le/les suivants d'un état 
 permettre de trouver les / les suivants dans la structure *)
+*)
