@@ -30,7 +30,7 @@ let dialog_open_log () =
 
 let create s =
   let lexbuf = Lexing.from_channel (open_in s)  in
-    let log_collection = Log_yacc.main Log_lex.token lexbuf in
+    let log_collection = LogBlareYacc.main LogBlareLex.token lexbuf in
       List.map (fun log_elementaire -> (List.fold_left (fun x  y -> x^y^", ") "" log_elementaire, Log.translate log_elementaire)
     ) log_collection
 

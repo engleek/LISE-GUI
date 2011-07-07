@@ -156,17 +156,17 @@ let yyact = [|
   (fun _ -> failwith "parser")
 ; (fun __caml_parser_env ->
     Obj.repr(
-# 15 "v2t2/log_yacc.mly"
+# 15 "log_yacc.mly"
           ([])
-# 162 "v2t2/log_yacc.ml"
+# 162 "log_yacc.ml"
                : Log.log_elem list))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 1 : 'log) in
     let _2 = (Parsing.peek_val __caml_parser_env 0 : Log.log_elem list) in
     Obj.repr(
-# 16 "v2t2/log_yacc.mly"
+# 16 "log_yacc.mly"
              (_1 :: _2)
-# 170 "v2t2/log_yacc.ml"
+# 170 "log_yacc.ml"
                : Log.log_elem list))
 ; (fun __caml_parser_env ->
     let _3 = (Parsing.peek_val __caml_parser_env 14 : string) in
@@ -178,40 +178,40 @@ let yyact = [|
     let _15 = (Parsing.peek_val __caml_parser_env 2 : string) in
     let _17 = (Parsing.peek_val __caml_parser_env 0 : 'param) in
     Obj.repr(
-# 18 "v2t2/log_yacc.mly"
+# 18 "log_yacc.mly"
   ( Log.make_call  _3 _5 _7 _11 _13 _9 _15 _17 )
-# 184 "v2t2/log_yacc.ml"
+# 184 "log_yacc.ml"
                : 'log))
 ; (fun __caml_parser_env ->
     let _3 = (Parsing.peek_val __caml_parser_env 9 : string) in
     let _5 = (Parsing.peek_val __caml_parser_env 7 : string) in
     let _10 = (Parsing.peek_val __caml_parser_env 2 : string) in
     Obj.repr(
-# 19 "v2t2/log_yacc.mly"
+# 19 "log_yacc.mly"
                                                                               ((Log.make_response   _3  _5  _10))
-# 193 "v2t2/log_yacc.ml"
+# 193 "log_yacc.ml"
                : 'log))
 ; (fun __caml_parser_env ->
     Obj.repr(
-# 23 "v2t2/log_yacc.mly"
+# 23 "log_yacc.mly"
      ([])
-# 199 "v2t2/log_yacc.ml"
+# 199 "log_yacc.ml"
                : 'param))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : string) in
     let _3 = (Parsing.peek_val __caml_parser_env 0 : 'param) in
     Obj.repr(
-# 24 "v2t2/log_yacc.mly"
+# 24 "log_yacc.mly"
                     (_1::_3)
-# 207 "v2t2/log_yacc.ml"
+# 207 "log_yacc.ml"
                : 'param))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : string) in
     let _3 = (Parsing.peek_val __caml_parser_env 0 : 'param) in
     Obj.repr(
-# 25 "v2t2/log_yacc.mly"
+# 25 "log_yacc.mly"
                        (_1::_3)
-# 215 "v2t2/log_yacc.ml"
+# 215 "log_yacc.ml"
                : 'param))
 (* Entry main *)
 ; (fun __caml_parser_env -> raise (Parsing.YYexit (Parsing.peek_val __caml_parser_env 0)))

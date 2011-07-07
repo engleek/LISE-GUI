@@ -2,7 +2,7 @@ let _ =
          (* try *)
   (*pour LISE let lexbuf = Lexing.from_channel (open_in "/Users/val/Documents/projets/Lise/traceur/code_ocaml/LISE_logs/logosDir0/events") in
   *)
-   let lexbuf = Lexing.from_channel (open_in "/Users/val/Documents/dev/anaLISEeur/LISE-GUI/v2t2/logBlareTEST.txt") in 
+   let lexbuf = Lexing.from_channel (open_in "Blare.log") in 
 
  print_string("Ouverture du fichier de log \n") ; 
     flush stdout;
