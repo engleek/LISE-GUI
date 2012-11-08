@@ -1,0 +1,1 @@
+<2>[    3.718650] [BLARE_POLICY_VIOLATION] file /system/bin/servicemanager 0 > process init:init 71 > {0}
