@@ -1,9 +1,9 @@
-# 1 "services_lex.mll"
+# 1 "v2t2/services_lex.mll"
  
  open Services_yacc
 
 
-# 7 "services_lex.ml"
+# 7 "v2t2/services_lex.ml"
 let __ocaml_lex_tables = {
   Lexing.lex_base = 
    "\000\000\091\000\192\000\252\255\253\255\254\255\255\255\027\001\
@@ -171,44 +171,44 @@ let rec token lexbuf =
 and __ocaml_lex_token_rec lexbuf __ocaml_lex_state =
   match Lexing.engine __ocaml_lex_tables __ocaml_lex_state lexbuf with
       | 0 ->
-# 9 "services_lex.mll"
+# 9 "v2t2/services_lex.mll"
                  ( token lexbuf )
-# 177 "services_lex.ml"
+# 177 "v2t2/services_lex.ml"
 
   | 1 ->
-# 10 "services_lex.mll"
+# 10 "v2t2/services_lex.mll"
                    ( EOL )
-# 182 "services_lex.ml"
+# 182 "v2t2/services_lex.ml"
 
   | 2 ->
-# 11 "services_lex.mll"
+# 11 "v2t2/services_lex.mll"
                    ( EOF)
-# 187 "services_lex.ml"
+# 187 "v2t2/services_lex.ml"
 
   | 3 ->
-# 12 "services_lex.mll"
+# 12 "v2t2/services_lex.mll"
          (PTVIRG)
-# 192 "services_lex.ml"
+# 192 "v2t2/services_lex.ml"
 
   | 4 ->
 let
-# 13 "services_lex.mll"
+# 13 "v2t2/services_lex.mll"
                      lxm
-# 198 "services_lex.ml"
+# 198 "v2t2/services_lex.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
-# 13 "services_lex.mll"
+# 13 "v2t2/services_lex.mll"
                           ( INT (int_of_string lxm))
-# 202 "services_lex.ml"
+# 202 "v2t2/services_lex.ml"
 
   | 5 ->
 let
-# 14 "services_lex.mll"
+# 14 "v2t2/services_lex.mll"
                                                                             lxm
-# 208 "services_lex.ml"
+# 208 "v2t2/services_lex.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
-# 14 "services_lex.mll"
+# 14 "v2t2/services_lex.mll"
                                                                                  ( STRING (lxm))
-# 212 "services_lex.ml"
+# 212 "v2t2/services_lex.ml"
 
   | __ocaml_lex_state -> lexbuf.Lexing.refill_buff lexbuf; __ocaml_lex_token_rec lexbuf __ocaml_lex_state
 
