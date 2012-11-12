@@ -7,7 +7,7 @@ let rec list_tag_to_string (l:string list) =
 List.fold_left (fun x y ->( x^" "^(y)^" ")) "\n" l
 
 let make_log  x1 x2 x3 x4 x5 x6 x7 x8 =
-["timestamp=("^x1^")";"from_source_type"^x2;" Name_"^x3; "Id_"^x4;"to_destination_type"^x5;" Name_"^x6; "Id_"^x7;"Using_Tag_"^(list_tag_to_string x8) ]
+["TS_"^x1^;"source_type_"^x2;"source_name_"^x3; "Id_Source"^x4;"destination_type"^x5;"destination_name_"^x6; "Id_"^x7;"tags_involved"^(list_tag_to_string x8) ]
 
 let make_nom nom =
   match 
