@@ -7,14 +7,14 @@ let rec list_tag_to_string (l:string list) =
 List.fold_left (fun x y ->( x^" "^(y)^" ")) "" l
 
 let make_log  x1 x2 x3 x4 x5 x6 x7 x8 =
-["TS_"^x1;"source_type_"^x2;"source_name_"^x3; "Id_Source"^x4;"destination_type_"^x5;"destination_name_"^x6; "Id_"^x7;"tags_involved_"^(list_tag_to_string x8) ]
+["TS_"^x1;"source_type_"^x2;"source_name_"^x3; "Id_Source_"^x4;"destination_type_"^x5;"destination_name_"^x6; "Id_"^x7;"tags_involved_"^(list_tag_to_string x8) ]
 
 let make_nom nom =
   match 
     nom 
   with 
-      p::[] -> "process_"^p
-    |p::t::[] ->  "process_"^p^"_:thread_"^t
+      p::[] -> p
+    |p::t::[] ->  p^"_:thread_"^t
     |_ -> failwith "erreur de parsing"
 (* fin ajout *)
 
